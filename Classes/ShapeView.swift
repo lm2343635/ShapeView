@@ -10,51 +10,114 @@ import UIKit
 
 public class ShapeView: UIView {
     
-    var drawShape: ((UIBezierPath) -> Void)? {
+    private lazy var shadowLayerView = UIView()
+    private lazy var containerView = UIView()
+    
+    public var drawShape: ((UIBezierPath) -> Void)? {
         didSet {
-            if shapeLayer != nil {
-                refresh()
-            }
+            updateShapePath()
+            refresh()
+        }
+    }
+
+    @IBInspectable public var shadowRaduis: CGFloat = 0 {
+        didSet {
+            refresh()
         }
     }
     
-    private var shapeLayer: CAShapeLayer?
-    private var shapeLayerFillColor: CGColor?
+    @IBInspectable public var shadowColor: UIColor = .clear {
+        didSet {
+            refresh()
+        }
+    }
+    
+    @IBInspectable public var shadowOpacity: Float = 1 {
+        didSet {
+            refresh()
+        }
+    }
+    
+    @IBInspectable public var shaowOffset: CGSize = .zero {
+        didSet {
+            refresh()
+        }
+    }
+    
+    // The shadow path is drawed by the closure drawShape.
+    // When the drawShape cloure is updated, the shapePath should be updated.
+    private var shapePath: UIBezierPath?
+    
+    // The screen path is used for creating the mask to cut the shadow layer.
+    // When the bounds is updated, it should be updated.
+    private var screenPath: UIBezierPath?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         clipsToBounds = false
+        addSubview(shadowLayerView)
+        addSubview(containerView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public var backgroundColor: UIColor? {
+    public override var backgroundColor: UIColor? {
         didSet {
-            shapeLayerFillColor = backgroundColor?.cgColor
+            containerView.backgroundColor = backgroundColor
             super.backgroundColor = .clear
-            if shapeLayer != nil {
-                refresh()
-            }
         }
     }
     
-    override public func draw(_ rect: CGRect) {
+    // Add subviews should be added to the container view except shadowLayerView and containerView.
+    public override func addSubview(_ view: UIView) {
+        if [shadowLayerView, containerView].contains(view) {
+            super.addSubview(view)
+        } else {
+            containerView.addSubview(view)
+        }
+    }
+    
+    public override func draw(_ rect: CGRect) {
         super.draw(rect)
+        shadowLayerView.frame = bounds
+        containerView.frame = bounds
+        updateShapePath()
+        updateScreenPath()
         refresh()
+    }
+
+    private func updateShapePath() {
+        shapePath = (drawShape == nil) ? UIBezierPath(rect: bounds) : {
+            let path = UIBezierPath()
+            drawShape?(path)
+            path.close()
+            return path
+        }()
+    }
+    
+    private func updateScreenPath() {
+        screenPath = {
+            let path = UIBezierPath()
+            let main = UIScreen.main.bounds
+            path.move(to: CGPoint(x: -frame.origin.x, y: -frame.origin.y))
+            path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: -frame.origin.y))
+            path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: main.height - frame.origin.y))
+            path.addLine(to: CGPoint(x: -frame.origin.x, y: main.height - frame.origin.y))
+            path.close()
+            return path
+        }()
     }
     
     private func refresh() {
-        shapeLayer?.removeFromSuperlayer()
-        
-        let shapePath = UIBezierPath()
-        drawShape?(shapePath)
-        shapePath.close()
+        guard let shapePath = shapePath, let screenPath = screenPath else {
+            return
+        }
         
         let shadowLayer = CAShapeLayer()
         shadowLayer.path = shapePath.cgPath
-        shadowLayer.fillRule = .evenOdd
         if shadowRaduis > 0 && shadowColor != .clear {
             shadowLayer.shadowRadius = shadowRaduis
             shadowLayer.shadowColor = shadowColor.cgColor
@@ -62,49 +125,23 @@ public class ShapeView: UIView {
             shadowLayer.shadowOffset = shaowOffset
             shadowLayer.fillColor = shadowColor.cgColor
         }
-        layer.insertSublayer(shadowLayer, at: 0)
+        shadowLayerView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        shadowLayerView.layer.insertSublayer(shadowLayer, at: 0)
         
-        shapeLayer = CAShapeLayer()
-        guard let shapeLayer = shapeLayer else {
-            return
-        }
-        shapeLayer.path = { () -> UIBezierPath in
+        let cutLayer = CAShapeLayer()
+        cutLayer.path = { () -> UIBezierPath in
             let path = UIBezierPath()
             path.append(shapePath)
-            path.append({
-                let path = UIBezierPath()
-                let main = UIScreen.main.bounds
-                path.move(to: CGPoint(x: -frame.origin.x, y: -frame.origin.y))
-                path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: -frame.origin.y))
-                path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: main.height - frame.origin.y))
-                path.addLine(to: CGPoint(x: -frame.origin.x, y: main.height - frame.origin.y))
-                path.close()
-                return path
-            }())
+            path.append(screenPath)
             path.usesEvenOddFillRule = true
             return path
         }().cgPath
-        shapeLayer.fillRule = .evenOdd
-        layer.mask = shapeLayer
+        cutLayer.fillRule = .evenOdd
+        shadowLayerView.layer.mask = cutLayer
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = shapePath.cgPath
+        containerView.layer.mask = shapeLayer
     }
-    
-    private var shadowRaduis: CGFloat = 0
-    private var shadowColor: UIColor = .clear
-    private var shadowOpacity: Float = 1
-    private var shaowOffset: CGSize = .zero
-    
-    public func setShadow(raduis: CGFloat, color: UIColor, opacity: Float? = 1, offset: CGSize? = .zero) {
-        shadowRaduis = raduis
-        shadowColor = color
-        if let opacity = opacity {
-            shadowOpacity = opacity
-        }
-        if let offset = offset {
-            shaowOffset = offset
-        }
-        if shapeLayer != nil {
-            refresh()
-        }
-    }
-    
+
 }
