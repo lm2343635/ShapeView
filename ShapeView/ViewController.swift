@@ -34,14 +34,7 @@ class MessageView: ShapeView {
             path.addLine(to: CGPoint(x: Const.left, y: labelHeight))
             path.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
-        
-        customizeShapeLayer = { layer in
-            layer.shadowRadius = 5
-            layer.shadowColor = UIColor.darkGray.cgColor
-            layer.shadowOpacity = 1
-            layer.shadowOffset = .zero
-        }
-
+        setShadow(raduis: 20, color: .green, offset: CGSize(width: 10, height: 10))
     }
     
     required init?(coder aDecoder: NSCoder) {

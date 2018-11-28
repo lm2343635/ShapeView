@@ -18,14 +18,6 @@ public class ShapeView: UIView {
         }
     }
     
-    var customizeShapeLayer: ((CAShapeLayer) -> Void)? {
-        didSet {
-            if shapeLayer != nil {
-                refresh()
-            }
-        }
-    }
-    
     private var shapeLayer: CAShapeLayer?
     private var shapeLayerFillColor: CGColor?
     
@@ -53,29 +45,66 @@ public class ShapeView: UIView {
         refresh()
     }
     
-    func refresh() {
+    private func refresh() {
         shapeLayer?.removeFromSuperlayer()
         
-        let path = UIBezierPath()
-        if drawShape == nil {
-            path.move(to: .zero)
-            path.addLine(to: CGPoint(x: bounds.width, y: 0))
-            path.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
-            path.addLine(to: CGPoint(x: 0, y: bounds.height))
-        } else {
-            drawShape?(path)
+        let shapePath = UIBezierPath()
+        drawShape?(shapePath)
+        shapePath.close()
+        
+        let shadowLayer = CAShapeLayer()
+        shadowLayer.path = shapePath.cgPath
+        shadowLayer.fillRule = .evenOdd
+        if shadowRaduis > 0 && shadowColor != .clear {
+            shadowLayer.shadowRadius = shadowRaduis
+            shadowLayer.shadowColor = shadowColor.cgColor
+            shadowLayer.shadowOpacity = shadowOpacity
+            shadowLayer.shadowOffset = shaowOffset
+            shadowLayer.fillColor = shadowColor.cgColor
         }
-        path.close()
+        layer.insertSublayer(shadowLayer, at: 0)
         
         shapeLayer = CAShapeLayer()
         guard let shapeLayer = shapeLayer else {
             return
         }
-        shapeLayer.path = path.cgPath
-        shapeLayer.fillColor = shapeLayerFillColor
-        customizeShapeLayer?(shapeLayer)
-        layer.insertSublayer(shapeLayer, at: 0)
+        shapeLayer.path = { () -> UIBezierPath in
+            let path = UIBezierPath()
+            path.append(shapePath)
+            path.append({
+                let path = UIBezierPath()
+                let main = UIScreen.main.bounds
+                path.move(to: CGPoint(x: -frame.origin.x, y: -frame.origin.y))
+                path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: -frame.origin.y))
+                path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: main.height - frame.origin.y))
+                path.addLine(to: CGPoint(x: -frame.origin.x, y: main.height - frame.origin.y))
+                path.close()
+                return path
+            }())
+            path.usesEvenOddFillRule = true
+            return path
+        }().cgPath
+        shapeLayer.fillRule = .evenOdd
+        layer.mask = shapeLayer
+    }
+    
+    private var shadowRaduis: CGFloat = 0
+    private var shadowColor: UIColor = .clear
+    private var shadowOpacity: Float = 1
+    private var shaowOffset: CGSize = .zero
+    
+    public func setShadow(raduis: CGFloat, color: UIColor, opacity: Float? = 1, offset: CGSize? = .zero) {
+        shadowRaduis = raduis
+        shadowColor = color
+        if let opacity = opacity {
+            shadowOpacity = opacity
+        }
+        if let offset = offset {
+            shaowOffset = offset
+        }
+        if shapeLayer != nil {
+            refresh()
+        }
     }
     
 }
-

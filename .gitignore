@@ -1,0 +1,23 @@
+# macOS
+.DS_Store
+.idea
+
+# Xcode
+xcuserdata/
+*.moved-aside
+*.xcuserstate
+
+# Pod
+*.xcworkspace/
+Pods/
+
+# R.swift
+*.generated.swift
+
+# Ruby
+/.bundle
+/vendor/bundle
+
+# fastlane
+athene.ipa
+athene.app.dSYM.zip
