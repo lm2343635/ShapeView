@@ -9,19 +9,25 @@
 /* Begin PBXBuildFile section */
 		777251EF21AE5EA300F667E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777251EE21AE5EA300F667E6 /* AppDelegate.swift */; };
 		777251F121AE5EA300F667E6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 777251F021AE5EA300F667E6 /* ViewController.swift */; };
-		777251F421AE5EA300F667E6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 777251F221AE5EA300F667E6 /* Main.storyboard */; };
 		777251F621AE5EA500F667E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 777251F521AE5EA500F667E6 /* Assets.xcassets */; };
 		777251F921AE5EA500F667E6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 777251F721AE5EA500F667E6 /* LaunchScreen.storyboard */; };
+		7772520321AE5F3000F667E6 /* ShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7772520221AE5F3000F667E6 /* ShapeView.swift */; };
+		7772520521AE620E00F667E6 /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 7772520421AE620E00F667E6 /* background.jpg */; };
+		E18C38371242FCAA6D3A10CD /* Pods_ShapeView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4983861AF3492C47165D7C4 /* Pods_ShapeView.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1129B3C3842A2172B7D92357 /* Pods-ShapeView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShapeView.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShapeView/Pods-ShapeView.release.xcconfig"; sourceTree = "<group>"; };
+		61E7930434E0E168E4EF93BD /* Pods-ShapeView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShapeView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShapeView/Pods-ShapeView.debug.xcconfig"; sourceTree = "<group>"; };
 		777251EB21AE5EA300F667E6 /* ShapeView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShapeView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		777251EE21AE5EA300F667E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		777251F021AE5EA300F667E6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		777251F321AE5EA300F667E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		777251F521AE5EA500F667E6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		777251F821AE5EA500F667E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		777251FA21AE5EA500F667E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7772520221AE5F3000F667E6 /* ShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeView.swift; sourceTree = "<group>"; };
+		7772520421AE620E00F667E6 /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = background.jpg; sourceTree = "<group>"; };
+		B4983861AF3492C47165D7C4 /* Pods_ShapeView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShapeView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +35,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E18C38371242FCAA6D3A10CD /* Pods_ShapeView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D94D25E278ABDB832CEFD73 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B4983861AF3492C47165D7C4 /* Pods_ShapeView.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		777251E221AE5EA300F667E6 = {
 			isa = PBXGroup;
 			children = (
+				7772520121AE5F1C00F667E6 /* Classes */,
 				777251ED21AE5EA300F667E6 /* ShapeView */,
 				777251EC21AE5EA300F667E6 /* Products */,
+				A8D7B29F41DD2B180B1B1D2C /* Pods */,
+				6D94D25E278ABDB832CEFD73 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,12 +74,29 @@
 			children = (
 				777251EE21AE5EA300F667E6 /* AppDelegate.swift */,
 				777251F021AE5EA300F667E6 /* ViewController.swift */,
-				777251F221AE5EA300F667E6 /* Main.storyboard */,
 				777251F521AE5EA500F667E6 /* Assets.xcassets */,
 				777251F721AE5EA500F667E6 /* LaunchScreen.storyboard */,
 				777251FA21AE5EA500F667E6 /* Info.plist */,
+				7772520421AE620E00F667E6 /* background.jpg */,
 			);
 			path = ShapeView;
+			sourceTree = "<group>";
+		};
+		7772520121AE5F1C00F667E6 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				7772520221AE5F3000F667E6 /* ShapeView.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		A8D7B29F41DD2B180B1B1D2C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				61E7930434E0E168E4EF93BD /* Pods-ShapeView.debug.xcconfig */,
+				1129B3C3842A2172B7D92357 /* Pods-ShapeView.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,9 +106,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 777251FD21AE5EA500F667E6 /* Build configuration list for PBXNativeTarget "ShapeView" */;
 			buildPhases = (
+				D3BFABED570E359F3F1056BD /* [CP] Check Pods Manifest.lock */,
 				777251E721AE5EA300F667E6 /* Sources */,
 				777251E821AE5EA300F667E6 /* Frameworks */,
 				777251E921AE5EA300F667E6 /* Resources */,
+				73079E8EDA29CBE1F97B8D10 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -122,19 +159,67 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7772520521AE620E00F667E6 /* background.jpg in Resources */,
 				777251F921AE5EA500F667E6 /* LaunchScreen.storyboard in Resources */,
 				777251F621AE5EA500F667E6 /* Assets.xcassets in Resources */,
-				777251F421AE5EA300F667E6 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		73079E8EDA29CBE1F97B8D10 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ShapeView/Pods-ShapeView-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ShapeView/Pods-ShapeView-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D3BFABED570E359F3F1056BD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ShapeView-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		777251E721AE5EA300F667E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7772520321AE5F3000F667E6 /* ShapeView.swift in Sources */,
 				777251F121AE5EA300F667E6 /* ViewController.swift in Sources */,
 				777251EF21AE5EA300F667E6 /* AppDelegate.swift in Sources */,
 			);
@@ -143,14 +228,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		777251F221AE5EA300F667E6 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				777251F321AE5EA300F667E6 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		777251F721AE5EA500F667E6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -213,7 +290,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -268,7 +345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -280,10 +357,12 @@
 		};
 		777251FE21AE5EA500F667E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61E7930434E0E168E4EF93BD /* Pods-ShapeView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ShapeView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -297,10 +376,12 @@
 		};
 		777251FF21AE5EA500F667E6 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1129B3C3842A2172B7D92357 /* Pods-ShapeView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = ShapeView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
