@@ -34,8 +34,10 @@ class MessageView: ShapeView {
             $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
             $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
-        shadowRaduis = 20
+        shadowRadius = 20
         shadowColor = .green
+        blurEffectStyle = .regular
+        blurAlpha = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -65,7 +67,7 @@ class ViewController: UIViewController {
     
     private lazy var messageView: MessageView = {
         let view = MessageView()
-        view.backgroundColor = UIColor(white: 1, alpha: 0.7)
+        view.backgroundColor = UIColor(white: 1, alpha: 0.1)
         view.label.text = "ShapeView Demo App"
         return view
     }()
@@ -78,12 +80,20 @@ class ViewController: UIViewController {
         createConstraints()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.messageView.shadowColor = .blue
+            self.messageView.shadowColor = .darkGray
             self.messageView.shaowOffset = CGSize(width: 10, height: 10)
         }
-        
+     
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.messageView.blurEffectStyle = .dark
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.messageView.drawShape = nil
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.messageView.blurAlpha = 0.5
         }
     }
     
