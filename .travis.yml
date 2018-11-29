@@ -1,0 +1,16 @@
+# references:
+# * https://www.objc.io/issues/6-build-tools/travis-ci/
+# * https://github.com/supermarin/xcpretty#usage
+
+osx_image: xcode10
+language: objective-c
+cache: cocoapods
+podfile: Podfile
+
+before_install:
+- gem install cocoapods
+- pod repo update
+- pod install
+
+script:
+- set -o pipefail && xcodebuild -workspace ShapeView.xcworkspace -scheme ShapeView -sdk iphonesimulator build CODE_SIGNING_REQUIRED=NO | xcpretty -c
