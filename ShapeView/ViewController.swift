@@ -80,6 +80,16 @@ class ViewController: UIViewController {
         createConstraints()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            UIView.animate(withDuration: 1) {
+                self.messageView.snp.updateConstraints {
+                    $0.height.equalTo(200)
+                }
+                self.messageView.superview?.layoutIfNeeded()
+            }
+        }
+        
+        /*
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.messageView.shadowColor = .darkGray
             self.messageView.shaowOffset = CGSize(width: 10, height: 10)
         }
@@ -95,13 +105,15 @@ class ViewController: UIViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             self.messageView.blurAlpha = 0.5
         }
+         */
+        
     }
     
     private func createConstraints() {
         messageView.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.8)
-            $0.height.equalTo(messageView.snp.width).multipliedBy(0.3)
+            $0.height.equalTo(100)
         }
     }
 
