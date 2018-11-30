@@ -1,9 +1,4 @@
-# ShapeView
-
-[![Build Status](https://travis-ci.org/lm2343635/ShapeView.svg?branch=master)](https://travis-ci.org/lm2343635/ShapeView)
-[![Version](https://img.shields.io/cocoapods/v/ShapeView.svg?style=flat)](https://cocoapods.org/pods/ShapeView)
-[![License](https://img.shields.io/cocoapods/l/ShapeView.svg?style=flat)](https://cocoapods.org/pods/ShapeView)
-[![Platform](https://img.shields.io/cocoapods/p/ShapeView.svg?style=flat)](https://cocoapods.org/pods/ShapeView)
+# ShapeView [![Build Status](https://travis-ci.org/lm2343635/ShapeView.svg?branch=master)](https://travis-ci.org/lm2343635/ShapeView) [![Version](https://img.shields.io/cocoapods/v/ShapeView.svg?style=flat)](https://cocoapods.org/pods/ShapeView) [![License](https://img.shields.io/cocoapods/l/ShapeView.svg?style=flat)](https://cocoapods.org/pods/ShapeView) [![Platform](https://img.shields.io/cocoapods/p/ShapeView.svg?style=flat)](https://cocoapods.org/pods/ShapeView)
 
 ShapeView support to create a view with the customized shape, shadow and transparent background at the same time.
 
@@ -43,6 +38,8 @@ view.drawShape = { [unowned self] in
 ```
 
 In the demo app, a dialog view is created with the code above.
+
+![Demo](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/demo.png)
 
 ## Author
 
