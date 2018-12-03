@@ -13,7 +13,7 @@ pod 'ShapeView'
 
 ShapeView supports the following attributes.
 
-- ```drawShape: ((UIBezierPath) -> Void)?```
+- ```path: ShapePath?```
 - ```shadowRadius: CGFloat```
 - ```shadowColor: UIColor```
 - ```shadowOpacity: Float```
@@ -21,17 +21,17 @@ ShapeView supports the following attributes.
 - ```blurEffectStyle: UIBlurEffect.Style?```
 - ```blurAlpha: CGFloat```
 
-To create a customized shape, draw the shape in the closure ```drawShape`` as the following.
+To create a customized shape, use ```.custom``` to draw the shape as the following.
 
 ```Swift
-view.drawShape = { [unowned self] in
-    let labelHeight = self.frame.height - Const.height
+view.path = .custom {
+    let labelHeight = view.frame.height - Const.height
     let raduis = labelHeight / 2
 
     $0.move(to: CGPoint(x: raduis, y: 0))
-    $0.addArc(withCenter: CGPoint(x: self.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
+    $0.addArc(withCenter: CGPoint(x: view.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
     $0.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
-    $0.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: self.frame.height))
+    $0.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: view.frame.height))
     $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
     $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
 }
@@ -40,6 +40,21 @@ view.drawShape = { [unowned self] in
 In the demo app, a dialog view is created with the code above.
 
 ![Demo](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/demo.png)
+
+Some shapes are prepared in the ShapeView struct.
+
+```Swift
+corner(radius: CGFloat, bounds: @escaping () -> CGRect)
+dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping () -> CGRect)
+```
+
+Here is a demo to create a dialog view.
+
+```Swift
+view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
+	return self.bounds
+}
+```
 
 ## Author
 
