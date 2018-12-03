@@ -37,7 +37,7 @@ public class ShapeView: UIView {
         return view
     }()
     
-    public var drawShape: ((UIBezierPath) -> Void)? {
+    public var path: ShapePath? {
         didSet {
             updateShapePath()
             refresh()
@@ -130,6 +130,7 @@ public class ShapeView: UIView {
     }
 
     private func updateShapePath() {
+        let drawShape = path?.drawShape
         shapePath = (drawShape == nil) ? UIBezierPath(rect: bounds) : {
             let path = UIBezierPath()
             drawShape?(path)

@@ -22,11 +22,11 @@ class MessageView: ShapeView {
         super.init(frame: frame)
         
         addSubview(label)
-        
-        drawShape = { [unowned self] in
+
+        path = .custom {
             let labelHeight = self.frame.height - Const.height
             let raduis = labelHeight / 2
-
+            
             $0.move(to: CGPoint(x: raduis, y: 0))
             $0.addArc(withCenter: CGPoint(x: self.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
             $0.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
@@ -34,6 +34,7 @@ class MessageView: ShapeView {
             $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
             $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
+        
         shadowRadius = 20
         shadowColor = .green
         blurEffectStyle = .regular
@@ -83,17 +84,25 @@ class ViewController: UIViewController {
             self.messageView.shadowColor = .darkGray
             self.messageView.shaowOffset = CGSize(width: 10, height: 10)
         }
-     
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.messageView.blurEffectStyle = .dark
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.messageView.drawShape = nil
+            self.messageView.path = .corner(radius: 10) {
+                return self.messageView.bounds
+            }
         }
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
             self.messageView.blurAlpha = 0.5
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.messageView.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
+                return self.messageView.bounds
+            }
         }
     }
     
