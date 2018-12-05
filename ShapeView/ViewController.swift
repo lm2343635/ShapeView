@@ -56,6 +56,59 @@ class MessageView: ShapeView {
     }
 }
 
+class ErrorView: UIView {
+
+    private struct Const {
+        static let left: CGFloat = 80
+        static let height: CGFloat = 20
+    }
+
+    lazy var label = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        addSubview(label)
+        clipsToBounds = false
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func draw(_ rect: CGRect) {
+        super.draw(rect)
+
+        let labelHeight = self.frame.height - Const.height
+        let raduis = labelHeight / 2
+
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: raduis, y: 0))
+        path.addArc(withCenter: CGPoint(x: self.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
+        path.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
+        path.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: self.frame.height))
+        path.addLine(to: CGPoint(x: Const.left, y: labelHeight))
+        path.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
+        path.close()
+
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = path.cgPath
+        shapeLayer.shadowColor = UIColor.green.cgColor
+        shapeLayer.shadowRadius = 10
+        shapeLayer.shadowOffset = .zero
+        shapeLayer.shadowOpacity = 1
+
+        layer.masksToBounds = true
+        layer.mask = shapeLayer
+//        layer.addSublayer(shapeLayer)
+
+        label.snp.makeConstraints {
+            $0.centerY.equalToSuperview().offset(-Const.height / 2)
+            $0.left.equalToSuperview().offset(bounds.height / 2)
+            $0.right.equalToSuperview().offset(-bounds.height / 2)
+        }
+    }
+}
 
 class ViewController: UIViewController {
     
@@ -72,12 +125,20 @@ class ViewController: UIViewController {
         view.label.text = "ShapeView Demo App"
         return view
     }()
+
+    private lazy var errorView: ErrorView = {
+        let view = ErrorView()
+        view.backgroundColor = UIColor(white: 1, alpha: 0.8)
+        view.label.text = "ShapeView Error Demo"
+        return view
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(backgroundImageView)
         view.addSubview(messageView)
+        view.addSubview(errorView)
         createConstraints()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -108,10 +169,18 @@ class ViewController: UIViewController {
     
     private func createConstraints() {
         messageView.snp.makeConstraints {
-            $0.center.equalToSuperview()
+            $0.centerX.equalToSuperview()
             $0.width.equalToSuperview().multipliedBy(0.8)
             $0.height.equalTo(messageView.snp.width).multipliedBy(0.3)
+            $0.top.equalToSuperview().offset(100)
         }
+
+        errorView.snp.makeConstraints {
+            $0.centerX.equalTo(messageView)
+            $0.size.equalTo(messageView)
+            $0.top.equalTo(messageView.snp.bottom).offset(50)
+        }
+
     }
 
 }

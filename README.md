@@ -52,9 +52,42 @@ Here is a demo to create a dialog view.
 
 ```Swift
 view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
-	return self.bounds
+    return self.bounds
 }
 ```
+
+## About the Implementation
+
+It is hard to create a customized shape with shadow and transparent background for UIView.
+We have tried to and shadow into the customized shape layer directly with the following code.
+
+```Swift
+let shapeLayer = CAShapeLayer()
+shapeLayer.path = shapePath.cgPath
+shapeLayer.shadowColor = UIColor.green.cgColor
+shapeLayer.shadowRadius = 10
+shapeLayer.shadowOffset = .zero
+shapeLayer.shadowOpacity = 1
+
+layer.masksToBounds = true
+```
+
+- Using a mask
+
+```Swift
+layer.mask = shapeLayer
+```
+
+![Mask](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/error-mask.png)
+
+- Adding a sublayer
+```Swift
+layer.addSublayer(shapeLayer)
+```
+
+![Sublayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/error-sublayer.png)
+
+Using a mask or adding a sublayer cannot implement the effect shown in our demo screenshoot.
 
 ## Author
 
