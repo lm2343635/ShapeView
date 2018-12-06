@@ -58,6 +58,10 @@ view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, hei
 
 ## About the Implementation
 
+**This part introduces how we implement the ShapeView, skip it if you are not interested.** 
+
+### Necessity to implement by ourselves
+
 It is hard to create a customized shape with shadow and transparent background for UIView.
 We have tried to and shadow into the customized shape layer directly with the following code.
 
@@ -88,6 +92,34 @@ layer.addSublayer(shapeLayer)
 ![Sublayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/error-sublayer.png)
 
 Using a mask or adding a sublayer cannot implement the effect shown in our demo screenshoot.
+
+### Structure
+
+![Shape layers](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/shape-layers.png)
+
+In the ShapeLayer, we add two subviews: ```shadowLayerView``` and ```containerView```.
+If the developer add subview to the ShapeView by the method ```addSubview(_ view:)```, we move it to the container view.
+
+### Creating a hollow mask layer
+
+To solve the problems, we need to creare a hollow mask layer by ourselves.
+Firstly, we create a shadow layer, and insert it to the ```shapeLayerView```.
+
+```Swift
+let shadowLayer = CAShapeLayer()
+shadowLayer.path = shapePath.cgPath
+if shadowRadius > 0 && shadowColor != .clear {
+    shadowLayer.shadowRadius = shadowRadius
+    shadowLayer.shadowColor = shadowColor.cgColor
+    shadowLayer.shadowOpacity = shadowOpacity
+    shadowLayer.shadowOffset = shaowOffset
+    shadowLayer.fillColor = shadowColor.cgColor
+}
+shadowLayerView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+shadowLayerView.layer.insertSublayer(shadowLayer, at: 0)
+```
+
+![shapelayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/shapelayer.png)
 
 ## Author
 

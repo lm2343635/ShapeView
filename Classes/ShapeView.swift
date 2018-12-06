@@ -169,16 +169,16 @@ public class ShapeView: UIView {
         shadowLayerView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         shadowLayerView.layer.insertSublayer(shadowLayer, at: 0)
         
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = { () -> UIBezierPath in
-            let path = UIBezierPath()
-            path.append(shapePath)
-            path.append(screenPath)
-            path.usesEvenOddFillRule = true
-            return path
-        }().cgPath
-        cutLayer.fillRule = .evenOdd
-        shadowLayerView.layer.mask = cutLayer
+//        let cutLayer = CAShapeLayer()
+//        cutLayer.path = { () -> UIBezierPath in
+//            let path = UIBezierPath()
+//            path.append(shapePath)
+//            path.append(screenPath)
+//            path.usesEvenOddFillRule = true
+//            return path
+//        }().cgPath
+//        cutLayer.fillRule = .evenOdd
+//        shadowLayerView.layer.mask = cutLayer
         
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = shapePath.cgPath
