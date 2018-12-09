@@ -121,6 +121,32 @@ shadowLayerView.layer.insertSublayer(shadowLayer, at: 0)
 
 ![shapelayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/shapelayer.png)
 
+The shadow layer created by ```CAShapeLayer``` is a solid layer.
+We need to make a cut layer shown as the red area in the following screenshoot, as a mask layer to create a hollow mask layer.
+
+```Swift
+let cutLayer = CAShapeLayer()
+cutLayer.path = { () -> UIBezierPath in
+    let path = UIBezierPath()
+    path.append(shapePath)
+    path.append(screenPath)
+    path.usesEvenOddFillRule = true
+    return path
+}().cgPath
+cutLayer.fillRule = .evenOdd
+```
+
+![cutlayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/cutlayer.png)
+
+The range of the cut layer is outside of the shape's border and inside of the screen's border.
+After creating the cut layer, we set it as the mask of the shadow layer view.
+
+```Swift
+shadowLayerView.layer.mask = cutLayer
+```
+
+![hollow-shapelayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/hollow-shapelayer.png)
+
 ## Author
 
 lm2343635, lm2343635@126.com
