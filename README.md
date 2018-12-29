@@ -145,7 +145,40 @@ After creating the cut layer, we set it as the mask of the shadow layer view.
 shadowLayerView.layer.mask = cutLayer
 ```
 
+By setting the cut layer for the shadow layer view, we get a hollow shape view with a shadow as the following picture.
+
 ![hollow-shapelayer](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/hollow-shapelayer.png)
+
+Next, we create a container view above the shadow view, and use the same shape path to create a shape layer as the mask of this container view.
+
+```Swift
+let shapeLayer = CAShapeLayer()
+shapeLayer.path = shapePath.cgPath
+containerView.layer.mask = shapeLayer
+```
+
+We override the `backgroundColor` property and the `addSubview` method for the shape view.
+Once we set a background color or add a subview to the shape view, it will be applied to the shape view.
+
+```Swift
+public override var backgroundColor: UIColor? {
+    didSet {
+        containerView.backgroundColor = backgroundColor
+        super.backgroundColor = .clear
+    }
+}
+
+// Add subviews should be added to the container view except shadowLayerView and containerView.
+public override func addSubview(_ view: UIView) {
+    if [shadowLayerView, containerView].contains(view) {
+        super.addSubview(view)
+    } else {
+        containerView.addSubview(view)
+    }
+}
+```
+
+At last, we get a customized shape view with the transparent background and shadow as shown in the demo screenshot.
 
 ## Author
 
@@ -153,4 +186,4 @@ lm2343635, lm2343635@126.com
 
 ## License
 
-RxOrientation is available under the MIT license. See the LICENSE file for more info.
+ShapeView is available under the MIT license. See the LICENSE file for more info.
