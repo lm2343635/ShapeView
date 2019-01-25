@@ -153,6 +153,8 @@ public class ShapeView: UIView {
     }
     
     private func refresh() {
+        print("refresh \(shapePath), \(screenPath)")
+        
         guard let shapePath = shapePath, let screenPath = screenPath else {
             return
         }
