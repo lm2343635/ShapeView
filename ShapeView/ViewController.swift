@@ -113,7 +113,7 @@ class ErrorView: UIView {
 class ViewController: UIViewController {
     
     private lazy var backgroundImageView: UIImageView = {
-        let imageView = UIImageView(frame: self.view.bounds)
+        let imageView = UIImageView()
         imageView.image = UIImage(named: "background.jpg")
         imageView.contentMode = .scaleAspectFill
         return imageView
@@ -133,52 +133,84 @@ class ViewController: UIViewController {
         return view
     }()
     
+    private lazy var customView: ShapeView = {
+        let shapeView = ShapeView()
+        shapeView.path = .custom {
+            let bounds = shapeView.bounds
+            $0.move(to: CGPoint(x: 0, y: 0))
+            $0.addLine(to: CGPoint(x: bounds.width / 2 - 20, y: 0))
+            $0.addLine(to: CGPoint(x: bounds.width / 2, y: 30))
+            $0.addLine(to: CGPoint(x: bounds.width, y: 30))
+            $0.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
+            $0.addLine(to: CGPoint(x: 0, y: bounds.height))
+        }
+        shapeView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        shapeView.shadowColor = .darkGray
+        shapeView.shadowRadius = 4
+        shapeView.blurEffectStyle = .dark
+        shapeView.blurAlpha = 0.8
+        return shapeView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.addSubview(backgroundImageView)
         view.addSubview(messageView)
         view.addSubview(errorView)
+        view.addSubview(customView)
         createConstraints()
 
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//            self.messageView.shadowColor = .darkGray
-//            self.messageView.shaowOffset = CGSize(width: 10, height: 10)
-//        }
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//            self.messageView.blurEffectStyle = .dark
-//        }
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//            self.messageView.path = .corner(radius: 10) {
-//                return self.messageView.bounds
-//            }
-//        }
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-//            self.messageView.blurAlpha = 0.5
-//        }
-//
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-//            self.messageView.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
-//                return self.messageView.bounds
-//            }
-//        }
+        /**
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.messageView.shadowColor = .darkGray
+            self.messageView.shaowOffset = CGSize(width: 10, height: 10)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.messageView.blurEffectStyle = .dark
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.messageView.path = .corner(radius: 10) {
+                return self.messageView.bounds
+            }
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
+            self.messageView.blurAlpha = 0.5
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.messageView.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
+                return self.messageView.bounds
+            }
+        }
+         */
     }
     
     private func createConstraints() {
+        backgroundImageView.snp.makeConstraints {
+            $0.left.right.bottom.top.equalToSuperview()
+        }
+        
         messageView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.width.equalToSuperview().multipliedBy(0.8)
-            $0.height.equalTo(messageView.snp.width).multipliedBy(0.3)
-            $0.top.equalToSuperview().offset(100)
+            $0.left.equalToSuperview().offset(50)
+            $0.right.equalToSuperview().offset(-50)
+            $0.height.equalTo(80)
+            $0.top.equalToSuperview().offset(70)
         }
 
         errorView.snp.makeConstraints {
             $0.centerX.equalTo(messageView)
             $0.size.equalTo(messageView)
-            $0.top.equalTo(messageView.snp.bottom).offset(50)
+            $0.top.equalTo(messageView.snp.bottom).offset(20)
+        }
+        
+        customView.snp.makeConstraints {
+            $0.centerX.equalTo(messageView)
+            $0.size.equalTo(messageView)
+            $0.top.equalTo(errorView.snp.bottom).offset(20)
         }
 
     }

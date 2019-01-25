@@ -118,7 +118,7 @@ public class ShapeView: UIView {
     
     public override func draw(_ rect: CGRect) {
         super.draw(rect)
-        
+
         shadowLayerView.frame = bounds
         containerView.frame = bounds
         effectView.frame = bounds
