@@ -96,6 +96,39 @@ public struct ShapePath {
         return .init(drawShape: drawShape)
     }
     
+    public static func star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping () -> CGRect) -> ShapePath {
+        let pointFrom = { (angle: CGFloat, radius: CGFloat, offset: CGPoint) -> CGPoint in
+            return CGPoint(x: radius * cos(angle) + offset.x, y: radius * sin(angle) + offset.y)
+        }
+        let drawShape: DrawShape = { path in
+            let bounds = bounds()
+            let center = CGPoint(x: bounds.width / 2.0, y: bounds.height / 2.0)
+            var angle: CGFloat = -.pi / 2.0
+            let angleIncrement = .pi * 2.0 / CGFloat(vertex)
+            let radius = bounds.width / 2.0
+            
+            var firstPoint = true
+            (1...vertex).forEach { _ in
+                let point = pointFrom(angle, radius, center)
+                let nextPoint = pointFrom(angle + angleIncrement, radius, center)
+                let midPoint = pointFrom(angle + angleIncrement / 2.0, extrusion, center)
+                
+                if firstPoint {
+                    firstPoint = false
+                    path.move(to: point)
+                }
+                
+                path.addLine(to: midPoint)
+                path.addLine(to: nextPoint)
+                
+                angle += angleIncrement
+            }
+        }
+        return .init(drawShape: drawShape)
+    }
+    
+
+    
 }
 
 public enum DialogArrowPosition {

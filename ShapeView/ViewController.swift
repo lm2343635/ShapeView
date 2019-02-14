@@ -152,6 +152,15 @@ class ViewController: UIViewController {
         return shapeView
     }()
     
+    private lazy var starView: ShapeView = {
+        let view = ShapeView()
+        view.path = .star(vertex: 5) {
+            return view.bounds
+        }
+        view.backgroundColor = .yellow
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -159,6 +168,7 @@ class ViewController: UIViewController {
         view.addSubview(messageView)
         view.addSubview(errorView)
         view.addSubview(customView)
+        view.addSubview(starView)
         createConstraints()
 
         /**
@@ -213,6 +223,12 @@ class ViewController: UIViewController {
             $0.top.equalTo(errorView.snp.bottom).offset(20)
         }
 
+        starView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.size.equalTo(50)
+            $0.top.equalTo(customView.snp.bottom).offset(20)
+        }
+        
     }
 
 }
