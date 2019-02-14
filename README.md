@@ -46,6 +46,7 @@ Some shapes are prepared in the ShapeView struct.
 ```Swift
 corner(radius: CGFloat, bounds: @escaping () -> CGRect)
 dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping () -> CGRect)
+star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping () -> CGRect)
 ```
 
 Here is a demo to create a dialog view.
@@ -55,6 +56,8 @@ view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, hei
     return self.bounds
 }
 ```
+
+Run the demp application to find more.
 
 ## About the Implementation
 
