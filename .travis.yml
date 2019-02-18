@@ -13,4 +13,4 @@ before_install:
 - pod install --project-directory=Example
 
 script:
-- set -o pipefail && xcodebuild -workspace Example/MGFormatter.xcworkspace -scheme MGFormatter-Example -sdk iphonesimulator build CODE_SIGNING_REQUIRED=NO | xcpretty -c
+- set -o pipefail && xcodebuild -workspace Example/ShapeView.xcworkspace -scheme ShapeView-Example -sdk iphonesimulator build CODE_SIGNING_REQUIRED=NO | xcpretty -c
