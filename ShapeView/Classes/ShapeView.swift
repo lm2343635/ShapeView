@@ -26,7 +26,7 @@
 
 import UIKit
 
-public class ShapeView: UIView {
+open class ShapeView: UIView {
     
     private lazy var shadowLayerView = UIView()
     private lazy var effectView = UIVisualEffectView()
@@ -88,7 +88,7 @@ public class ShapeView: UIView {
     // When the bounds is updated, it should be updated.
     private var screenPath: UIBezierPath?
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         clipsToBounds = false
@@ -96,11 +96,11 @@ public class ShapeView: UIView {
         addSubview(containerView)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override var backgroundColor: UIColor? {
+    open override var backgroundColor: UIColor? {
         didSet {
             containerView.backgroundColor = backgroundColor
             super.backgroundColor = .clear
@@ -108,7 +108,7 @@ public class ShapeView: UIView {
     }
     
     // Add subviews should be added to the container view except shadowLayerView and containerView.
-    public override func addSubview(_ view: UIView) {
+    open override func addSubview(_ view: UIView) {
         if [shadowLayerView, containerView].contains(view) {
             super.addSubview(view)
         } else {
@@ -116,7 +116,7 @@ public class ShapeView: UIView {
         }
     }
     
-    public override func draw(_ rect: CGRect) {
+    open override func draw(_ rect: CGRect) {
         super.draw(rect)
 
         shadowLayerView.frame = bounds

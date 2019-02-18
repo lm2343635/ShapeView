@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import ShapeView
 
 class MessageView: ShapeView {
     
@@ -120,7 +121,7 @@ class ViewController: UIViewController {
     }()
     
     private lazy var messageView: MessageView = {
-        let view = MessageView()
+        let view = MessageView(frame: .zero)
         view.backgroundColor = UIColor(white: 1, alpha: 0.1)
         view.label.text = "ShapeView Demo App"
         return view

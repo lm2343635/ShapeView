@@ -1,0 +1,23 @@
+PODS:
+  - ShapeView (0.2.1)
+  - SnapKit (4.2.0)
+
+DEPENDENCIES:
+  - ShapeView (from `../`)
+  - SnapKit
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SnapKit
+
+EXTERNAL SOURCES:
+  ShapeView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  ShapeView: 0eca5065fbb0a59b81d9b94bce10ec94fdf3d0fd
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+
+PODFILE CHECKSUM: 492a88f3f373a52ce54207ed2558cc28cc588d63
+
+COCOAPODS: 1.6.0
