@@ -17,12 +17,17 @@ class MessageView: ShapeView {
         static let height: CGFloat = 20
     }
     
-    lazy var label = UILabel()
+    lazy var button: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        return button
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(label)
+        addSubview(button)
 
         path = .custom {
             let labelHeight = self.frame.height - Const.height
@@ -35,13 +40,9 @@ class MessageView: ShapeView {
             $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
             $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
-        
-        
+
         outerShadow = ShapeShadow(raduis: 20, color: .green)
         innerShadow = ShapeShadow(raduis: 10, color: .green)
-        
-        blurEffectStyle = .regular
-        blurAlpha = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -51,7 +52,7 @@ class MessageView: ShapeView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        label.snp.makeConstraints {
+        button.snp.makeConstraints {
             $0.centerY.equalToSuperview().offset(-Const.height / 2)
             $0.left.equalToSuperview().offset(bounds.height / 2)
             $0.right.equalToSuperview().offset(-bounds.height / 2)
@@ -124,8 +125,11 @@ class ViewController: UIViewController {
     
     private lazy var messageView: MessageView = {
         let view = MessageView(frame: .zero)
-        view.backgroundColor = UIColor(white: 1, alpha: 0.1)
-        view.label.text = "ShapeView Demo App"
+        view.backgroundColor = .white
+//        view.blurEffectStyle = .regular
+//        view.blurAlpha = 1
+        
+        view.button.setTitle("ShapeView Demo App", for: .normal)
         return view
     }()
 
