@@ -14,10 +14,8 @@ pod 'ShapeView'
 ShapeView supports the following attributes.
 
 - `path: ShapePath?`
-- `shadow: ShapeShadow`
-- `shadowColor: UIColor`
-- `shadowOpacity: Float`
-- `shaowOffset: CGSize`
+- `outerShadow: ShapeShadow`
+- `innerShadow: ShapeShadow`
 - `blurEffectStyle: UIBlurEffect.Style?`
 - `blurAlpha: CGFloat`
 
