@@ -17,12 +17,17 @@ class MessageView: ShapeView {
         static let height: CGFloat = 20
     }
     
-    lazy var label = UILabel()
+    lazy var button: UIButton = {
+        let button = UIButton()
+        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.lightGray, for: .highlighted)
+        return button
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(label)
+        addSubview(button)
 
         path = .custom {
             let labelHeight = self.frame.height - Const.height
@@ -35,11 +40,9 @@ class MessageView: ShapeView {
             $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
             $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
-        
-        shadowRadius = 20
-        shadowColor = .green
-        blurEffectStyle = .regular
-        blurAlpha = 1
+
+        outerShadow = ShapeShadow(raduis: 20, color: .green)
+        innerShadow = ShapeShadow(raduis: 20, color: .green)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,7 +52,7 @@ class MessageView: ShapeView {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         
-        label.snp.makeConstraints {
+        button.snp.makeConstraints {
             $0.centerY.equalToSuperview().offset(-Const.height / 2)
             $0.left.equalToSuperview().offset(bounds.height / 2)
             $0.right.equalToSuperview().offset(-bounds.height / 2)
@@ -122,8 +125,10 @@ class ViewController: UIViewController {
     
     private lazy var messageView: MessageView = {
         let view = MessageView(frame: .zero)
-        view.backgroundColor = UIColor(white: 1, alpha: 0.1)
-        view.label.text = "ShapeView Demo App"
+        view.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        view.blurEffectStyle = .regular
+        view.blurAlpha = 0.7
+        view.button.setTitle("ShapeView Demo App", for: .normal)
         return view
     }()
 
@@ -146,8 +151,7 @@ class ViewController: UIViewController {
             $0.addLine(to: CGPoint(x: 0, y: bounds.height))
         }
         shapeView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        shapeView.shadowColor = .darkGray
-        shapeView.shadowRadius = 4
+        shapeView.outerShadow = ShapeShadow(raduis: 4, color: .darkGray)
         shapeView.blurEffectStyle = .dark
         shapeView.blurAlpha = 0.8
         return shapeView
@@ -204,20 +208,21 @@ class ViewController: UIViewController {
         backgroundImageView.snp.makeConstraints {
             $0.left.right.bottom.top.equalToSuperview()
         }
-        
+
         messageView.snp.makeConstraints {
             $0.left.equalToSuperview().offset(50)
             $0.right.equalToSuperview().offset(-50)
             $0.height.equalTo(80)
             $0.top.equalToSuperview().offset(70)
+           
         }
-
+        
         errorView.snp.makeConstraints {
             $0.centerX.equalTo(messageView)
             $0.size.equalTo(messageView)
             $0.top.equalTo(messageView.snp.bottom).offset(20)
         }
-        
+
         customView.snp.makeConstraints {
             $0.centerX.equalTo(messageView)
             $0.size.equalTo(messageView)

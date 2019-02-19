@@ -28,43 +28,31 @@ import UIKit
 
 open class ShapeView: UIView {
     
-    private lazy var shadowLayerView = UIView()
-    private lazy var effectView = UIVisualEffectView()
-    
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.addSubview(effectView)
-        return view
+    private lazy var shapeLayer: ShapeLayer = {
+        let layer = ShapeLayer()
+        layer.didUpdateLayer = { [unowned self] in
+            self.effectView.layer.mask = $0
+        }
+        return layer
     }()
     
+    private lazy var effectView = UIVisualEffectView()
+
     public var path: ShapePath? {
         didSet {
-            updateShapePath()
-            refresh()
+            shapeLayer.layerPath = path
         }
     }
 
-    @IBInspectable public var shadowRadius: CGFloat = 0 {
+    public var outerShadow: ShapeShadow? {
         didSet {
-            refresh()
+            shapeLayer.outerShadow = outerShadow
         }
     }
     
-    @IBInspectable public var shadowColor: UIColor = .clear {
+    public var innerShadow: ShapeShadow? {
         didSet {
-            refresh()
-        }
-    }
-    
-    @IBInspectable public var shadowOpacity: Float = 1 {
-        didSet {
-            refresh()
-        }
-    }
-    
-    @IBInspectable public var shaowOffset: CGSize = .zero {
-        didSet {
-            refresh()
+            shapeLayer.innerShadow = innerShadow
         }
     }
     
@@ -74,26 +62,17 @@ open class ShapeView: UIView {
         }
     }
     
-    @IBInspectable public var blurAlpha: CGFloat = 0 {
+    public var blurAlpha: CGFloat = 0 {
         didSet {
             blur()
         }
     }
     
-    // The shadow path is drawed by the closure drawShape.
-    // When the drawShape cloure is updated, the shapePath should be updated.
-    private var shapePath: UIBezierPath?
-    
-    // The screen path is used for creating the mask to cut the shadow layer.
-    // When the bounds is updated, it should be updated.
-    private var screenPath: UIBezierPath?
-    
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        clipsToBounds = false
-        addSubview(shadowLayerView)
-        addSubview(containerView)
+
+        layer.addSublayer(shapeLayer)
+        addSubview(effectView)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -102,89 +81,17 @@ open class ShapeView: UIView {
     
     open override var backgroundColor: UIColor? {
         didSet {
-            containerView.backgroundColor = backgroundColor
+            shapeLayer.backgroundColor = backgroundColor?.cgColor
             super.backgroundColor = .clear
         }
     }
     
-    // Add subviews should be added to the container view except shadowLayerView and containerView.
-    open override func addSubview(_ view: UIView) {
-        if [shadowLayerView, containerView].contains(view) {
-            super.addSubview(view)
-        } else {
-            containerView.addSubview(view)
+    open override var bounds: CGRect {
+        didSet {
+            shapeLayer.frame = bounds
         }
     }
     
-    open override func draw(_ rect: CGRect) {
-        super.draw(rect)
-
-        shadowLayerView.frame = bounds
-        containerView.frame = bounds
-        effectView.frame = bounds
-        
-        updateShapePath()
-        updateScreenPath()
-        refresh()
-        blur()
-    }
-
-    private func updateShapePath() {
-        let drawShape = path?.drawShape
-        shapePath = (drawShape == nil) ? UIBezierPath(rect: bounds) : {
-            let path = UIBezierPath()
-            drawShape?(path)
-            path.close()
-            return path
-        }()
-    }
-    
-    private func updateScreenPath() {
-        screenPath = {
-            let path = UIBezierPath()
-            let main = UIScreen.main.bounds
-            path.move(to: CGPoint(x: -frame.origin.x, y: -frame.origin.y))
-            path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: -frame.origin.y))
-            path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: main.height - frame.origin.y))
-            path.addLine(to: CGPoint(x: -frame.origin.x, y: main.height - frame.origin.y))
-            path.close()
-            return path
-        }()
-    }
-    
-    private func refresh() {
-        guard let shapePath = shapePath, let screenPath = screenPath else {
-            return
-        }
-        
-        let shadowLayer = CAShapeLayer()
-        shadowLayer.path = shapePath.cgPath
-        if shadowRadius > 0 && shadowColor != .clear {
-            shadowLayer.shadowRadius = shadowRadius
-            shadowLayer.shadowColor = shadowColor.cgColor
-            shadowLayer.shadowOpacity = shadowOpacity
-            shadowLayer.shadowOffset = shaowOffset
-            shadowLayer.fillColor = shadowColor.cgColor
-        }
-        shadowLayerView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
-        shadowLayerView.layer.insertSublayer(shadowLayer, at: 0)
-        
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = { () -> UIBezierPath in
-            let path = UIBezierPath()
-            path.append(shapePath)
-            path.append(screenPath)
-            path.usesEvenOddFillRule = true
-            return path
-        }().cgPath
-        cutLayer.fillRule = .evenOdd
-        shadowLayerView.layer.mask = cutLayer
-        
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = shapePath.cgPath
-        containerView.layer.mask = shapeLayer
-    }
-
     private func blur() {
         guard let style = blurEffectStyle else {
             return
@@ -192,5 +99,5 @@ open class ShapeView: UIView {
         effectView.effect = UIBlurEffect(style: style)
         effectView.alpha = blurAlpha
     }
-    
+
 }
