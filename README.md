@@ -13,13 +13,13 @@ pod 'ShapeView'
 
 ShapeView supports the following attributes.
 
-- ```path: ShapePath?```
-- ```shadowRadius: CGFloat```
-- ```shadowColor: UIColor```
-- ```shadowOpacity: Float```
-- ```shaowOffset: CGSize```
-- ```blurEffectStyle: UIBlurEffect.Style?```
-- ```blurAlpha: CGFloat```
+- `path: ShapePath?`
+- `shadow: ShapeShadow`
+- `shadowColor: UIColor`
+- `shadowOpacity: Float`
+- `shaowOffset: CGSize`
+- `blurEffectStyle: UIBlurEffect.Style?`
+- `blurAlpha: CGFloat`
 
 To create a customized shape, use ```.custom``` to draw the shape as the following.
 
@@ -55,6 +55,12 @@ Here is a demo to create a dialog view.
 view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
     return self.bounds
 }
+view.outerShadow = ShapeShadow(
+    raduis: 10,
+    color: .green,
+    opacity: 1,
+    offset: .zero
+)
 ```
 
 Run the demp application to find more.
@@ -71,11 +77,17 @@ We have tried to and shadow into the customized shape layer directly with the fo
 ```Swift
 let shapeLayer = CAShapeLayer()
 shapeLayer.path = shapePath.cgPath
-shapeLayer.shadowColor = UIColor.green.cgColor
+shapeLayer.shadow = UIColor.green.cgColor
 shapeLayer.shadowRadius = 10
 shapeLayer.shadowOffset = .zero
 shapeLayer.shadowOpacity = 1
 
+ShapeShadow(
+    raduis: 10,
+    color: .green,
+    opacity: 1,
+    offset: .zero
+)
 layer.masksToBounds = true
 ```
 
