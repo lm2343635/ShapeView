@@ -36,8 +36,10 @@ class MessageView: ShapeView {
             $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
         
-        shadowRadius = 20
-        shadowColor = .green
+        
+        outerShadow = ShapeShadow(raduis: 20, color: .green)
+        innerShadow = ShapeShadow(raduis: 10, color: .green)
+        
         blurEffectStyle = .regular
         blurAlpha = 1
     }
@@ -146,8 +148,8 @@ class ViewController: UIViewController {
             $0.addLine(to: CGPoint(x: 0, y: bounds.height))
         }
         shapeView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        shapeView.shadowColor = .darkGray
-        shapeView.shadowRadius = 4
+//        shapeView.shadowColor = .darkGray
+//        shapeView.shadowRadius = 4
         shapeView.blurEffectStyle = .dark
         shapeView.blurAlpha = 0.8
         return shapeView
