@@ -26,58 +26,33 @@
 
 import UIKit
 
-public struct ShapeShadow {
-    
-    var raduis: CGFloat
-    var color: UIColor
-    var opacity: Float
-    var offset: CGSize
-    
-    public init(raduis: CGFloat = 0, color: UIColor = .clear, opacity: Float = 1, offset: CGSize = .zero) {
-        self.raduis = raduis
-        self.color = color
-        self.opacity = opacity
-        self.offset = offset
-    }
-    
-}
-
-fileprivate extension CAShapeLayer {
-    
-    func setShapeShadow(_ shadow: ShapeShadow) {
-        shadowRadius = shadow.raduis
-        shadowColor = shadow.color.cgColor
-        shadowOpacity = shadow.opacity
-        shadowOffset = shadow.offset
-        fillColor = shadow.color.cgColor
-    }
-    
-}
-
 open class ShapeView: UIView {
     
-    private lazy var outerShadowLayer = CAShapeLayer()
-    private lazy var backgroundLayer = CALayer()
-    private lazy var innerShadowLayer = CAShapeLayer()
+    private lazy var shapeLayer: ShapeLayer = {
+        let layer = ShapeLayer()
+        layer.didUpdateLayer = { [unowned self] in
+            self.effectView.layer.mask = $0
+        }
+        return layer
+    }()
     
     private lazy var effectView = UIVisualEffectView()
 
     public var path: ShapePath? {
         didSet {
-            updateShapePath()
-            refresh()
+            shapeLayer.layerPath = path
         }
     }
 
     public var outerShadow: ShapeShadow? {
         didSet {
-            refreshOuter()
+            shapeLayer.outerShadow = outerShadow
         }
     }
     
     public var innerShadow: ShapeShadow? {
         didSet {
-            refreshInner()
+            shapeLayer.innerShadow = innerShadow
         }
     }
     
@@ -93,23 +68,10 @@ open class ShapeView: UIView {
         }
     }
     
-    // The shadow path is drawed by the closure drawShape.
-    // When the drawShape cloure is updated, the shapePath should be updated.
-    private var shapePath: UIBezierPath?
-    
-    // The screen path is used for creating the mask to cut the shadow layer.
-    // When the bounds is updated, it should be updated.
-    private var screenPath: UIBezierPath?
-    
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        clipsToBounds = false
 
-        layer.addSublayer(outerShadowLayer)
-        layer.addSublayer(backgroundLayer)
-        layer.addSublayer(innerShadowLayer)
-        
+        layer.addSublayer(shapeLayer)
         addSubview(effectView)
     }
     
@@ -119,117 +81,17 @@ open class ShapeView: UIView {
     
     open override var backgroundColor: UIColor? {
         didSet {
-            backgroundLayer.backgroundColor = backgroundColor?.cgColor
+            shapeLayer.backgroundColor = backgroundColor?.cgColor
             super.backgroundColor = .clear
         }
     }
-
-    open override func draw(_ rect: CGRect) {
-        super.draw(rect)
-
-        effectView.frame = bounds
-        
-        updateShapePath()
-        updateScreenPath()
-        refresh()
-        blur()
-    }
-
-    private func updateShapePath() {
-        let drawShape = path?.drawShape
-        shapePath = (drawShape == nil) ? UIBezierPath(rect: bounds) : {
-            let path = UIBezierPath()
-            drawShape?(path)
-            path.close()
-            return path
-        }()
-    }
     
-    private func updateScreenPath() {
-        screenPath = {
-            let path = UIBezierPath()
-            let main = UIScreen.main.bounds
-            path.move(to: CGPoint(x: -frame.origin.x, y: -frame.origin.y))
-            path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: -frame.origin.y))
-            path.addLine(to: CGPoint(x: main.width - frame.origin.x, y: main.height - frame.origin.y))
-            path.addLine(to: CGPoint(x: -frame.origin.x, y: main.height - frame.origin.y))
-            path.close()
-            return path
-        }()
-    }
-    
-    private func refreshInner() {
-        guard
-            let shapePath = shapePath,
-            let screenPath = screenPath,
-            let shadow = innerShadow
-        else {
-            return
+    open override var bounds: CGRect {
+        didSet {
+            shapeLayer.frame = bounds
         }
-        
-        innerShadowLayer.frame = bounds
-        innerShadowLayer.masksToBounds = true
-        innerShadowLayer.fillRule = .evenOdd
-        innerShadowLayer.path = { () -> UIBezierPath in
-            let path = UIBezierPath()
-            path.append(screenPath)
-            path.append(shapePath)
-            return path
-        }().cgPath
-        innerShadowLayer.setShapeShadow(shadow)
-
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = shapePath.cgPath
-        innerShadowLayer.mask = cutLayer
     }
     
-    private func refreshOuter() {
-        guard
-            let shapePath = shapePath,
-            let screenPath = screenPath,
-            let shadow = outerShadow
-        else {
-            return
-        }
-
-        outerShadowLayer.path = shapePath.cgPath
-        outerShadowLayer.setShapeShadow(shadow)
-
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = { () -> UIBezierPath in
-            let path = UIBezierPath()
-            path.append(shapePath)
-            path.append(screenPath)
-            path.usesEvenOddFillRule = true
-            return path
-        }().cgPath
-        cutLayer.fillRule = .evenOdd
-        outerShadowLayer.mask = cutLayer
-    }
-    
-    private func refreshBackground() {
-        guard let shapePath = shapePath else {
-            return
-        }
-        backgroundLayer.frame = bounds
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = shapePath.cgPath
-        backgroundLayer.mask = cutLayer
-    }
-    
-    private func refresh() {
-        guard let shapePath = shapePath else {
-            return
-        }
-        refreshOuter()
-        refreshInner()
-        refreshBackground()
-
-        let shapeLayer = CAShapeLayer()
-        shapeLayer.path = shapePath.cgPath
-        effectView.layer.mask = shapeLayer
-    }
-
     private func blur() {
         guard let style = blurEffectStyle else {
             return
@@ -237,5 +99,5 @@ open class ShapeView: UIView {
         effectView.effect = UIBlurEffect(style: style)
         effectView.alpha = blurAlpha
     }
-    
+
 }
