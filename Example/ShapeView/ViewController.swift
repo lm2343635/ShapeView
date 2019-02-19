@@ -125,9 +125,9 @@ class ViewController: UIViewController {
     
     private lazy var messageView: MessageView = {
         let view = MessageView(frame: .zero)
-        view.backgroundColor = .white
-//        view.blurEffectStyle = .regular
-//        view.blurAlpha = 1
+        view.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        view.blurEffectStyle = .regular
+        view.blurAlpha = 0.7
         
         view.button.setTitle("ShapeView Demo App", for: .normal)
         return view
@@ -210,18 +210,11 @@ class ViewController: UIViewController {
         backgroundImageView.snp.makeConstraints {
             $0.left.right.bottom.top.equalToSuperview()
         }
-        
-        messageView.snp.makeConstraints {
-            $0.left.equalToSuperview().offset(50)
-            $0.right.equalToSuperview().offset(-50)
-            $0.height.equalTo(80)
-            $0.top.equalToSuperview().offset(70)
-        }
 
         errorView.snp.makeConstraints {
             $0.centerX.equalTo(messageView)
             $0.size.equalTo(messageView)
-            $0.top.equalTo(messageView.snp.bottom).offset(20)
+            $0.top.equalToSuperview().offset(70)
         }
         
         customView.snp.makeConstraints {
@@ -234,6 +227,13 @@ class ViewController: UIViewController {
             $0.centerX.equalToSuperview()
             $0.size.equalTo(50)
             $0.top.equalTo(customView.snp.bottom).offset(20)
+        }
+        
+        messageView.snp.makeConstraints {
+            $0.left.equalToSuperview().offset(50)
+            $0.right.equalToSuperview().offset(-50)
+            $0.height.equalTo(80)
+            $0.top.equalTo(starView.snp.bottom).offset(20)
         }
         
     }

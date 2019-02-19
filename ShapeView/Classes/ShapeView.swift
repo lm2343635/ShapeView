@@ -27,6 +27,7 @@
 import UIKit
 
 public struct ShapeShadow {
+    
     var raduis: CGFloat
     var color: UIColor
     var opacity: Float
@@ -38,9 +39,10 @@ public struct ShapeShadow {
         self.opacity = opacity
         self.offset = offset
     }
+    
 }
 
-extension CAShapeLayer {
+fileprivate extension CAShapeLayer {
     
     func setShapeShadow(_ shadow: ShapeShadow) {
         shadowRadius = shadow.raduis
@@ -58,22 +60,8 @@ open class ShapeView: UIView {
     private lazy var backgroundLayer = CALayer()
     private lazy var innerShadowLayer = CAShapeLayer()
     
-    private lazy var shadowView: UIView = {
-        let view = UIView()
-        view.layer.addSublayer(outerShadowLayer)
-        view.layer.addSublayer(backgroundLayer)
-        view.layer.addSublayer(innerShadowLayer)
-        return view
-    }()
-    
     private lazy var effectView = UIVisualEffectView()
-    
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.addSubview(effectView)
-        return view
-    }()
-    
+
     public var path: ShapePath? {
         didSet {
             updateShapePath()
@@ -117,9 +105,12 @@ open class ShapeView: UIView {
         super.init(frame: frame)
         
         clipsToBounds = false
+
+        layer.addSublayer(outerShadowLayer)
+        layer.addSublayer(backgroundLayer)
+        layer.addSublayer(innerShadowLayer)
         
-        addSubview(shadowView)
-        addSubview(containerView)
+        addSubview(effectView)
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -128,26 +119,14 @@ open class ShapeView: UIView {
     
     open override var backgroundColor: UIColor? {
         didSet {
-//            containerView.backgroundColor = backgroundColor
             backgroundLayer.backgroundColor = backgroundColor?.cgColor
             super.backgroundColor = .clear
         }
     }
-    
-    // Add subviews should be added to the container view except shadowLayerView and containerView.
-    open override func addSubview(_ view: UIView) {
-        if [shadowView, containerView].contains(view) {
-            super.addSubview(view)
-        } else {
-            containerView.addSubview(view)
-        }
-    }
-    
+
     open override func draw(_ rect: CGRect) {
         super.draw(rect)
 
-        shadowView.frame = bounds
-        containerView.frame = bounds
         effectView.frame = bounds
         
         updateShapePath()
@@ -233,7 +212,6 @@ open class ShapeView: UIView {
             return
         }
         backgroundLayer.frame = bounds
-        
         let cutLayer = CAShapeLayer()
         cutLayer.path = shapePath.cgPath
         backgroundLayer.mask = cutLayer
@@ -249,7 +227,7 @@ open class ShapeView: UIView {
 
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = shapePath.cgPath
-        containerView.layer.mask = shapeLayer
+        effectView.layer.mask = shapeLayer
     }
 
     private func blur() {
