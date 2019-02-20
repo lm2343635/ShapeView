@@ -171,6 +171,7 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(TableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = 100
+        tableView.backgroundColor = .clear
         return tableView
     }()
     

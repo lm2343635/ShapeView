@@ -25,6 +25,7 @@ class TableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         selectionStyle = .none
+        backgroundColor = .clear
         
         addSubview(starView)
         starView.snp.makeConstraints {

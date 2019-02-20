@@ -77,17 +77,6 @@ public class ShapeLayer: CAShapeLayer {
         return path
     }()
     
-    public override init() {
-        super.init()
-        addSublayer(outerShadowLayer)
-        addSublayer(backgroundLayer)
-        addSublayer(innerShadowLayer)
-    }
-    
-    public required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     public var layerPath: ShapePath? {
         didSet {
             updateShapePath()
@@ -116,8 +105,20 @@ public class ShapeLayer: CAShapeLayer {
         }
     }
     
+    private var initialized = false
+    
     open override var bounds: CGRect {
         didSet {
+            guard bounds != .zero else {
+                return
+            }
+            if !initialized {
+                addSublayer(outerShadowLayer)
+                addSublayer(backgroundLayer)
+                addSublayer(innerShadowLayer)
+                initialized = true
+            }
+            
             updateShapePath()
             refresh()
         }
@@ -164,7 +165,7 @@ public class ShapeLayer: CAShapeLayer {
             else {
                 return
         }
-
+        
         outerShadowLayer.path = shapePath.cgPath
         outerShadowLayer.setShapeShadow(shadow)
         
@@ -203,3 +204,4 @@ public class ShapeLayer: CAShapeLayer {
     }
     
 }
+
