@@ -166,6 +166,14 @@ class ViewController: UIViewController {
         return view
     }()
     
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
+        tableView.dataSource = self
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.rowHeight = 100
+        return tableView
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -174,6 +182,7 @@ class ViewController: UIViewController {
         view.addSubview(errorView)
         view.addSubview(customView)
         view.addSubview(starView)
+        view.addSubview(tableView)
         createConstraints()
 
         /**
@@ -235,6 +244,29 @@ class ViewController: UIViewController {
             $0.top.equalTo(customView.snp.bottom).offset(20)
         }
         
+        tableView.snp.makeConstraints {
+            $0.left.right.bottom.equalToSuperview()
+            $0.top.equalTo(starView.snp.bottom).offset(20)
+        }
+        
     }
 
 }
+
+extension ViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell else {
+            return UITableViewCell()
+        }
+        
+        return cell
+    }
+    
+    
+}
+
