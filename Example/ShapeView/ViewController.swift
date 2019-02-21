@@ -114,6 +114,44 @@ class ErrorView: UIView {
     }
 }
 
+class CustomView: ShapeView {
+    
+    private lazy var button: UIButton = {
+        let button = UIButton()
+        button.setTitle("Inner Button", for: .normal)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
+        return button
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addSubview(button)
+        button.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.size.equalToSuperview().multipliedBy(0.5)
+        }
+        
+        path = .custom {
+            let bounds = self.bounds
+            $0.move(to: CGPoint(x: 0, y: 0))
+            $0.addLine(to: CGPoint(x: bounds.width / 2 - 20, y: 0))
+            $0.addLine(to: CGPoint(x: bounds.width / 2, y: 30))
+            $0.addLine(to: CGPoint(x: bounds.width, y: 30))
+            $0.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
+            $0.addLine(to: CGPoint(x: 0, y: bounds.height))
+        }
+
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
 class ViewController: UIViewController {
     
     private lazy var backgroundImageView: UIImageView = {
@@ -139,22 +177,13 @@ class ViewController: UIViewController {
         return view
     }()
     
-    private lazy var customView: ShapeView = {
-        let shapeView = ShapeView()
-        shapeView.path = .custom {
-            let bounds = shapeView.bounds
-            $0.move(to: CGPoint(x: 0, y: 0))
-            $0.addLine(to: CGPoint(x: bounds.width / 2 - 20, y: 0))
-            $0.addLine(to: CGPoint(x: bounds.width / 2, y: 30))
-            $0.addLine(to: CGPoint(x: bounds.width, y: 30))
-            $0.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
-            $0.addLine(to: CGPoint(x: 0, y: bounds.height))
-        }
-        shapeView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        shapeView.outerShadow = ShapeShadow(raduis: 4, color: .darkGray)
-        shapeView.blurEffectStyle = .dark
-        shapeView.blurAlpha = 0.8
-        return shapeView
+    private lazy var customView: CustomView = {
+        let view = CustomView()
+        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        view.innerShadow = ShapeShadow(raduis: 8, color: .white)
+        view.blurEffectStyle = .dark
+        view.blurAlpha = 0.8
+        return view
     }()
     
     private lazy var starView: ShapeView = {
@@ -185,7 +214,7 @@ class ViewController: UIViewController {
         view.addSubview(starView)
         view.addSubview(tableView)
         createConstraints()
-
+        
         /**
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.messageView.shadowColor = .darkGray

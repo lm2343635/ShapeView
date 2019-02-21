@@ -28,10 +28,17 @@ import UIKit
 
 open class ShapeView: UIView {
     
+    private var cutLayer: CAShapeLayer?
+    
     private lazy var shapeLayer: ShapeLayer = {
         let layer = ShapeLayer()
         layer.didUpdateLayer = { [unowned self] in
+            guard self.bounds != .zero else {
+                return
+            }
+            self.cutLayer = $0
             self.effectView.layer.mask = $0
+            self.cutView()
         }
         return layer
     }()
@@ -71,12 +78,19 @@ open class ShapeView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
 
+        clipsToBounds = true
         layer.addSublayer(shapeLayer)
         addSubview(effectView)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override var clipsToBounds: Bool {
+        didSet {
+            cutView()
+        }
     }
     
     open override var backgroundColor: UIColor? {
@@ -98,6 +112,12 @@ open class ShapeView: UIView {
         }
         effectView.effect = UIBlurEffect(style: style)
         effectView.alpha = blurAlpha
+    }
+    
+    private func cutView() {
+        if clipsToBounds, let cutLayer = cutLayer {
+            layer.mask = cutLayer
+        }
     }
 
 }
