@@ -18,6 +18,8 @@ ShapeView supports the following attributes.
 - `innerShadow: ShapeShadow`
 - `blurEffectStyle: UIBlurEffect.Style?`
 - `blurAlpha: CGFloat`
+- `backgroundColor: UIColor?`
+- `clipsToBounds: Bool`
 
 To create a customized shape, use ```.custom``` to draw the shape as the following.
 
