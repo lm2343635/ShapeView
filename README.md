@@ -11,6 +11,8 @@ it, simply add the following line to your Podfile:
 pod 'ShapeView'
 ```
 
+#### Using ShapeView
+
 ShapeView supports the following attributes.
 
 - `path: ShapePath?`
@@ -19,7 +21,6 @@ ShapeView supports the following attributes.
 - `blurEffectStyle: UIBlurEffect.Style?`
 - `blurAlpha: CGFloat`
 - `backgroundColor: UIColor?`
-- `clipsToBounds: Bool`
 
 To create a customized shape, use ```.custom``` to draw the shape as the following.
 
@@ -64,6 +65,19 @@ view.outerShadow = ShapeShadow(
 ```
 
 Run the demp application to find more.
+
+#### Using ShapeLayer
+
+We provide `ShapeLayer` for developers to apply it to your view directly.
+
+- `layerPath: ShapePath?` 
+- `var outerShadow: ShapeShadow?`
+- `var innerShadow: ShapeShadow?`
+- `var didUpdateLayer: ((CAShapeLayer) -> Void)?`
+- `var backgroundColor: CGColor?`
+
+When the shape layer finish drawing the layer, it calls the `didUpdateLayer` cloure to notify the parent view.
+Developers can update the parent view with the first parameter in this closure.
 
 ## About the Implementation
 
@@ -112,7 +126,7 @@ Using a mask or adding a sublayer cannot implement the effect shown in our demo 
 
 ![Shape layers](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/shape-layers.png)
 
-In the ShapeLayer, we add two subviews: ```shadowLayerView``` and ```containerView```.
+In the ShapeLayer, we add a shadow layer for the shape and effect, and a container view for storing subviews..
 If the developer add subview to the ShapeView by the method ```addSubview(_ view:)```, we move it to the container view.
 
 ### Creating a hollow mask layer
@@ -172,27 +186,10 @@ shapeLayer.path = shapePath.cgPath
 containerView.layer.mask = shapeLayer
 ```
 
-We override the `backgroundColor` property and the `addSubview` method for the shape view.
+We override the `backgroundColor` property and the view related methos like `addSubview` method for the shape view.
 Once we set a background color or add a subview to the shape view, it will be applied to the shape view.
 
-```Swift
-public override var backgroundColor: UIColor? {
-    didSet {
-        containerView.backgroundColor = backgroundColor
-        super.backgroundColor = .clear
-    }
-}
-
-// Add subviews should be added to the container view except shadowLayerView and containerView.
-public override func addSubview(_ view: UIView) {
-    if [shadowLayerView, containerView].contains(view) {
-        super.addSubview(view)
-    } else {
-        containerView.addSubview(view)
-    }
-}
-```
-
+The introduction above shows how to create a outer shadow, the method to create a inner shadow is same as the outer shadow.
 At last, we get a customized shape view with the transparent background and shadow as shown in the demo screenshot.
 
 ## Author
