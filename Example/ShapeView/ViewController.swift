@@ -181,6 +181,7 @@ class ViewController: UIViewController {
         let view = CustomView()
         view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         view.innerShadow = ShapeShadow(raduis: 8, color: .white)
+        view.outerShadow = ShapeShadow(raduis: 8, color: .white)
         view.blurEffectStyle = .dark
         view.blurAlpha = 0.8
         return view

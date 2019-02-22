@@ -44,7 +44,8 @@ open class ShapeView: UIView {
     }()
     
     private lazy var effectView = UIVisualEffectView()
-
+    private lazy var containerView = UIView()
+    
     public var path: ShapePath? {
         didSet {
             shapeLayer.layerPath = path
@@ -78,16 +79,16 @@ open class ShapeView: UIView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
 
-        clipsToBounds = true
         layer.addSublayer(shapeLayer)
-        addSubview(effectView)
+        super.addSubview(effectView)
+        super.addSubview(containerView)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    open override var clipsToBounds: Bool {
+    open var clips: Bool = true {
         didSet {
             cutView()
         }
@@ -103,6 +104,8 @@ open class ShapeView: UIView {
     open override var bounds: CGRect {
         didSet {
             shapeLayer.frame = bounds
+            containerView.frame = bounds
+            cutView()
         }
     }
     
@@ -115,9 +118,32 @@ open class ShapeView: UIView {
     }
     
     private func cutView() {
-        if clipsToBounds, let cutLayer = cutLayer {
-            layer.mask = cutLayer
+        guard let cutLayer = cutLayer else {
+            return
+        }
+        if clips {
+            containerView.layer.mask = cutLayer
         }
     }
 
+}
+
+extension ShapeView {
+    
+    open override func addSubview(_ view: UIView) {
+        containerView.addSubview(view)
+    }
+    
+    open override func insertSubview(_ view: UIView, at index: Int) {
+        containerView.insertSubview(view, at: index)
+    }
+    
+    open override func insertSubview(_ view: UIView, aboveSubview siblingSubview: UIView) {
+        containerView.insertSubview(view, aboveSubview: siblingSubview)
+    }
+    
+    open override func exchangeSubview(at index1: Int, withSubviewAt index2: Int) {
+        containerView.exchangeSubview(at: index1, withSubviewAt: index2)
+    }
+    
 }
