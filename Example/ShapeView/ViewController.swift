@@ -183,7 +183,7 @@ class ViewController: UIViewController {
         view.innerShadow = ShapeShadow(raduis: 8, color: .white)
         view.outerShadow = ShapeShadow(raduis: 8, color: .white)
         view.blurEffectStyle = .dark
-        view.blurAlpha = 0.8
+        view.blurAlpha = 0.1
         return view
     }()
     

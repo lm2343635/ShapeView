@@ -27,24 +27,25 @@
 import UIKit
 
 open class ShapeView: UIView {
-    
-    private var cutLayer: CAShapeLayer?
-    
+
     private lazy var shapeLayer: ShapeLayer = {
         let layer = ShapeLayer()
         layer.didUpdateLayer = { [unowned self] in
             guard self.bounds != .zero else {
                 return
             }
-            self.cutLayer = $0
-            self.effectView.layer.mask = $0
-            self.cutView()
+            self.containerView.layer.mask = $0
         }
         return layer
     }()
     
     private lazy var effectView = UIVisualEffectView()
-    private lazy var containerView = UIView()
+    
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.addSubview(effectView)
+        return view
+    }()
     
     public var path: ShapePath? {
         didSet {
@@ -80,20 +81,13 @@ open class ShapeView: UIView {
         super.init(frame: frame)
 
         layer.addSublayer(shapeLayer)
-        super.addSubview(effectView)
         super.addSubview(containerView)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    open var clips: Bool = true {
-        didSet {
-            cutView()
-        }
-    }
-    
+
     open override var backgroundColor: UIColor? {
         didSet {
             shapeLayer.backgroundColor = backgroundColor?.cgColor
@@ -104,8 +98,8 @@ open class ShapeView: UIView {
     open override var bounds: CGRect {
         didSet {
             shapeLayer.frame = bounds
+            effectView.frame = bounds
             containerView.frame = bounds
-            cutView()
         }
     }
     
@@ -115,15 +109,6 @@ open class ShapeView: UIView {
         }
         effectView.effect = UIBlurEffect(style: style)
         effectView.alpha = blurAlpha
-    }
-    
-    private func cutView() {
-        guard let cutLayer = cutLayer else {
-            return
-        }
-        if clips {
-            containerView.layer.mask = cutLayer
-        }
     }
 
 }
@@ -135,7 +120,7 @@ extension ShapeView {
     }
     
     open override func insertSubview(_ view: UIView, at index: Int) {
-        containerView.insertSubview(view, at: index)
+        containerView.insertSubview(view, at: index - 1)
     }
     
     open override func insertSubview(_ view: UIView, aboveSubview siblingSubview: UIView) {
@@ -143,7 +128,7 @@ extension ShapeView {
     }
     
     open override func exchangeSubview(at index1: Int, withSubviewAt index2: Int) {
-        containerView.exchangeSubview(at: index1, withSubviewAt: index2)
+        containerView.exchangeSubview(at: index1 - 1, withSubviewAt: index2 - 1)
     }
     
 }
