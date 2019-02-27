@@ -7,7 +7,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ShapeView'
-  s.version          = '0.4'
+  s.version          = '0.4.1'
   s.summary          = 'A customized shape view with shadow and transparent background supported.'
 
   s.description      = <<-DESC
