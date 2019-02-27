@@ -131,17 +131,15 @@ public class ShapeLayer: CAShapeLayer {
             drawShape?(path)
             path.close()
             return path
-            }()
+        }()
     }
     
     private func refreshInner() {
-        guard
-            let shapePath = shapePath,
-            let shadow = innerShadow
-            else {
-                return
+        guard let shapePath = shapePath, let shadow = innerShadow else {
+            innerShadowLayer.isHidden = true
+            return
         }
-        
+        innerShadowLayer.isHidden = false
         innerShadowLayer.frame = bounds
         innerShadowLayer.masksToBounds = true
         innerShadowLayer.fillRule = .evenOdd
@@ -150,7 +148,7 @@ public class ShapeLayer: CAShapeLayer {
             path.append(screenPath)
             path.append(shapePath)
             return path
-            }().cgPath
+        }().cgPath
         innerShadowLayer.setShapeShadow(shadow)
         
         let cutLayer = CAShapeLayer()
@@ -159,13 +157,11 @@ public class ShapeLayer: CAShapeLayer {
     }
     
     private func refreshOuter() {
-        guard
-            let shapePath = shapePath,
-            let shadow = outerShadow
-            else {
-                return
+        guard let shapePath = shapePath, let shadow = outerShadow else {
+            outerShadowLayer.isHidden = true
+            return
         }
-        
+        outerShadowLayer.isHidden = false
         outerShadowLayer.path = shapePath.cgPath
         outerShadowLayer.setShapeShadow(shadow)
         
@@ -176,7 +172,7 @@ public class ShapeLayer: CAShapeLayer {
             path.append(screenPath)
             path.usesEvenOddFillRule = true
             return path
-            }().cgPath
+        }().cgPath
         cutLayer.fillRule = .evenOdd
         outerShadowLayer.mask = cutLayer
     }
