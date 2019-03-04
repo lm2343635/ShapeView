@@ -27,7 +27,7 @@
 import UIKit
 
 open class ShapeView: UIView {
-
+    
     private lazy var shapeLayer: ShapeLayer = {
         let layer = ShapeLayer()
         layer.didUpdateLayer = { [unowned self] in
@@ -52,7 +52,7 @@ open class ShapeView: UIView {
             shapeLayer.layerPath = path
         }
     }
-
+    
     public var outerShadow: ShapeShadow? {
         didSet {
             shapeLayer.outerShadow = outerShadow
@@ -79,15 +79,17 @@ open class ShapeView: UIView {
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
-
+        
         layer.addSublayer(shapeLayer)
         super.addSubview(containerView)
+        
+        createConstraints()
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     open override var backgroundColor: UIColor? {
         didSet {
             shapeLayer.backgroundColor = backgroundColor?.cgColor
@@ -98,8 +100,6 @@ open class ShapeView: UIView {
     open override var bounds: CGRect {
         didSet {
             shapeLayer.frame = bounds
-            effectView.frame = bounds
-            containerView.frame = bounds
         }
     }
     
@@ -110,7 +110,21 @@ open class ShapeView: UIView {
         effectView.effect = UIBlurEffect(style: style)
         effectView.alpha = blurAlpha
     }
-
+    
+    private func createConstraints() {
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        containerView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        
+        effectView.translatesAutoresizingMaskIntoConstraints = false
+        effectView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
+        effectView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
+        effectView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
+        effectView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
+    }
+    
 }
 
 extension ShapeView {

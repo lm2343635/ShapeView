@@ -119,7 +119,7 @@
 				607FACCC1AFB9204008FA782 /* Sources */,
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
-				77164F36221A5CC300EE0D17 /* ShellScript */,
+				77164F36221A5CC300EE0D17 /* Rebuild Pods */,
 				817F4A1D7D78C0CB3ED84F2F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -180,7 +180,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		77164F36221A5CC300EE0D17 /* ShellScript */ = {
+		77164F36221A5CC300EE0D17 /* Rebuild Pods */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -189,6 +189,7 @@
 			);
 			inputPaths = (
 			);
+			name = "Rebuild Pods";
 			outputFileListPaths = (
 			);
 			outputPaths = (
