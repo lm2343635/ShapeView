@@ -53,7 +53,7 @@ star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping () -> CGRect)
 Here is a demo to create a dialog view.
 
 ```Swift
-view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
+view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) { [unowned self] in
     return self.bounds
 }
 view.outerShadow = ShapeShadow(
