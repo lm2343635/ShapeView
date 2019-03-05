@@ -29,7 +29,7 @@ class MessageView: ShapeView {
         
         addSubview(button)
 
-        path = .custom {
+        path = .custom { [unowned self] in
             let labelHeight = self.frame.height - Const.height
             let raduis = labelHeight / 2
             
@@ -134,7 +134,7 @@ class CustomView: ShapeView {
             $0.size.equalToSuperview().multipliedBy(0.5)
         }
         
-        path = .custom {
+        path = .custom { [unowned self] in
             let bounds = self.bounds
             $0.move(to: CGPoint(x: 0, y: 0))
             $0.addLine(to: CGPoint(x: bounds.width / 2 - 20, y: 0))
@@ -189,10 +189,11 @@ class ViewController: UIViewController {
     
     private lazy var starView: ShapeView = {
         let view = ShapeView()
-        view.path = .star(vertex: 5) {
+        view.path = .star(vertex: 5) { [unowned view] in
             return view.bounds
         }
         view.backgroundColor = .yellow
+        view.outerShadow = ShapeShadow(raduis: 8, color: .white)
         return view
     }()
     
@@ -216,6 +217,7 @@ class ViewController: UIViewController {
         view.addSubview(tableView)
         createConstraints()
         
+        starView.isHidden = true
         /**
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.messageView.shadowColor = .darkGray
