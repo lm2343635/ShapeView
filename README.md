@@ -25,7 +25,7 @@ ShapeView supports the following attributes.
 To create a customized shape, use ```.custom``` to draw the shape as the following.
 
 ```Swift
-view.path = .custom {
+view.path = .custom { [unowned view] in
     let labelHeight = view.frame.height - Const.height
     let raduis = labelHeight / 2
 

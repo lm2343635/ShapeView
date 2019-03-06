@@ -217,7 +217,6 @@ class ViewController: UIViewController {
         view.addSubview(tableView)
         createConstraints()
         
-        starView.isHidden = true
         /**
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.messageView.shadowColor = .darkGray
