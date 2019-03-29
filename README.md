@@ -27,14 +27,14 @@ To create a customized shape, use ```.custom``` to draw the shape as the followi
 ```Swift
 view.path = .custom { [unowned view] in
     let labelHeight = view.frame.height - Const.height
-    let raduis = labelHeight / 2
+    let radius = labelHeight / 2
 
-    $0.move(to: CGPoint(x: raduis, y: 0))
-    $0.addArc(withCenter: CGPoint(x: view.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
+    $0.move(to: CGPoint(x: radius, y: 0))
+    $0.addArc(withCenter: CGPoint(x: view.frame.width - radius, y: radius), radius: radius, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
     $0.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
     $0.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: view.frame.height))
     $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
-    $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
+    $0.addArc(withCenter: CGPoint(x: radius, y: radius), radius: radius, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
 }
 ```
 
@@ -57,7 +57,7 @@ view.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, hei
     return self.bounds
 }
 view.outerShadow = ShapeShadow(
-    raduis: 10,
+    radius: 10,
     color: .green,
     opacity: 1,
     offset: .zero
@@ -97,7 +97,7 @@ shapeLayer.shadowOffset = .zero
 shapeLayer.shadowOpacity = 1
 
 ShapeShadow(
-    raduis: 10,
+    radius: 10,
     color: .green,
     opacity: 1,
     offset: .zero
