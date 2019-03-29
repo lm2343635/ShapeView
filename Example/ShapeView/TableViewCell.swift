@@ -17,7 +17,7 @@ class TableViewCell: UITableViewCell {
             return view.bounds
         }
         view.backgroundColor = .yellow
-        view.outerShadow = ShapeShadow(raduis: 5, color: .lightGray)
+        view.outerShadow = ShapeShadow(radius: 5, color: .lightGray)
         return view
     }()
     

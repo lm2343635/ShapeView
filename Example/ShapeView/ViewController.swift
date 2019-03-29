@@ -41,8 +41,8 @@ class MessageView: ShapeView {
             $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
         }
 
-        outerShadow = ShapeShadow(raduis: 20, color: .green)
-        innerShadow = ShapeShadow(raduis: 20, color: .green)
+        outerShadow = ShapeShadow(radius: 20, color: .green)
+        innerShadow = ShapeShadow(radius: 20, color: .green)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -180,8 +180,8 @@ class ViewController: UIViewController {
     private lazy var customView: CustomView = {
         let view = CustomView()
         view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
-        view.innerShadow = ShapeShadow(raduis: 8, color: .white)
-        view.outerShadow = ShapeShadow(raduis: 8, color: .white)
+        view.innerShadow = ShapeShadow(radius: 8, color: .white)
+        view.outerShadow = ShapeShadow(radius: 8, color: .white)
         view.blurEffectStyle = .dark
         view.blurAlpha = 0.1
         return view
@@ -193,7 +193,7 @@ class ViewController: UIViewController {
             return view.bounds
         }
         view.backgroundColor = .yellow
-        view.outerShadow = ShapeShadow(raduis: 8, color: .white)
+        view.outerShadow = ShapeShadow(radius: 8, color: .white)
         return view
     }()
     

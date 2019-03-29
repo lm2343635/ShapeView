@@ -28,13 +28,13 @@ import UIKit
 
 public struct ShapeShadow {
     
-    var raduis: CGFloat
+    var radius: CGFloat
     var color: UIColor
     var opacity: Float
     var offset: CGSize
     
-    public init(raduis: CGFloat = 0, color: UIColor = .clear, opacity: Float = 1, offset: CGSize = .zero) {
-        self.raduis = raduis
+    public init(radius: CGFloat = 0, color: UIColor = .clear, opacity: Float = 1, offset: CGSize = .zero) {
+        self.radius = radius
         self.color = color
         self.opacity = opacity
         self.offset = offset
@@ -45,7 +45,7 @@ public struct ShapeShadow {
 fileprivate extension CAShapeLayer {
     
     func setShapeShadow(_ shadow: ShapeShadow) {
-        shadowRadius = shadow.raduis
+        shadowRadius = shadow.radius
         shadowColor = shadow.color.cgColor
         shadowOpacity = shadow.opacity
         shadowOffset = shadow.offset
