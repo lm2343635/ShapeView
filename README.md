@@ -186,9 +186,6 @@ shapeLayer.path = shapePath.cgPath
 containerView.layer.mask = shapeLayer
 ```
 
-We override the `backgroundColor` property and the view related methos like `addSubview` method for the shape view.
-Once we set a background color or add a subview to the shape view, it will be applied to the shape view.
-
 The introduction above shows how to create a outer shadow, the method to create a inner shadow is same as the outer shadow.
 At last, we get a customized shape view with the transparent background and shadow as shown in the demo screenshot.
 
