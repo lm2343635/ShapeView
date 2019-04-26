@@ -1,5 +1,5 @@
 PODS:
-  - ShapeView (0.3.1)
+  - ShapeView (0.5)
   - SnapKit (4.2.0)
 
 DEPENDENCIES:
@@ -15,9 +15,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ShapeView: 8dcc4a1f803e4a9eab68109a4f037119beb07c27
+  ShapeView: dd29d7d5af9c477d2ec32b0a8abc09d46679ff99
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
 
 PODFILE CHECKSUM: 492a88f3f373a52ce54207ed2558cc28cc588d63
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.6.1
