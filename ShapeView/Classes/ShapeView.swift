@@ -34,18 +34,13 @@ open class ShapeView: UIView {
             guard self.bounds != .zero else {
                 return
             }
-            self.containerView.layer.mask = $0
+            self.effectView.layer.mask = $0
         }
         return layer
     }()
     
     private lazy var effectView = UIVisualEffectView()
     
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.addSubview(effectView)
-        return view
-    }()
     
     public var path: ShapePath? {
         didSet {
@@ -81,25 +76,23 @@ open class ShapeView: UIView {
         super.init(frame: frame)
         
         layer.addSublayer(shapeLayer)
-        super.addSubview(containerView)
-        
-        createConstraints()
+        shapeLayer.addSublayer(effectView.layer)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    open override func layoutSubviews() {
+        shapeLayer.frame = bounds
+        effectView.frame = shapeLayer.bounds
+        super.layoutSubviews()
+    }
+    
     open override var backgroundColor: UIColor? {
         didSet {
             shapeLayer.backgroundColor = backgroundColor?.cgColor
             super.backgroundColor = .clear
-        }
-    }
-    
-    open override var bounds: CGRect {
-        didSet {
-            shapeLayer.frame = bounds
         }
     }
     
@@ -110,39 +103,4 @@ open class ShapeView: UIView {
         effectView.effect = UIBlurEffect(style: style)
         effectView.alpha = blurAlpha
     }
-    
-    private func createConstraints() {
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        
-        effectView.translatesAutoresizingMaskIntoConstraints = false
-        effectView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        effectView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        effectView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        effectView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-    }
-    
-}
-
-extension ShapeView {
-    
-    open override func addSubview(_ view: UIView) {
-        containerView.addSubview(view)
-    }
-    
-    open override func insertSubview(_ view: UIView, at index: Int) {
-        containerView.insertSubview(view, at: index - 1)
-    }
-    
-    open override func insertSubview(_ view: UIView, aboveSubview siblingSubview: UIView) {
-        containerView.insertSubview(view, aboveSubview: siblingSubview)
-    }
-    
-    open override func exchangeSubview(at index1: Int, withSubviewAt index2: Int) {
-        containerView.exchangeSubview(at: index1 - 1, withSubviewAt: index2 - 1)
-    }
-    
 }
