@@ -39,13 +39,7 @@ open class ShapeView: UIView {
         return layer
     }()
     
-    private lazy var effectView = UIVisualEffectView()
-    
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.addSubview(effectView)
-        return view
-    }()
+    private lazy var containerView = UIView()
     
     public var path: ShapePath? {
         didSet {
@@ -107,8 +101,8 @@ open class ShapeView: UIView {
         guard let style = blurEffectStyle else {
             return
         }
-        effectView.effect = UIBlurEffect(style: style)
-        effectView.alpha = blurAlpha
+        shapeLayer.effectView.effect = UIBlurEffect(style: style)
+        shapeLayer.effectView.alpha = blurAlpha
     }
     
     private func createConstraints() {
@@ -117,12 +111,6 @@ open class ShapeView: UIView {
         containerView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         containerView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        
-        effectView.translatesAutoresizingMaskIntoConstraints = false
-        effectView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        effectView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        effectView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        effectView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
     }
     
 }
