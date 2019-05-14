@@ -60,7 +60,6 @@ public class ShapeLayer: CAShapeLayer {
     
     private let outerShadowLayer = CAShapeLayer()
     private let backgroundLayer = CALayer()
-    private let effectLayer = CAShapeLayer()
     private let innerShadowLayer = CAShapeLayer()
     
     // The shadow path is drawed by the closure drawShape.
@@ -118,9 +117,8 @@ public class ShapeLayer: CAShapeLayer {
             if !initialized {
                 addSublayer(outerShadowLayer)
                 addSublayer(backgroundLayer)
-                addSublayer(effectLayer)
                 addSublayer(innerShadowLayer)
-                effectLayer.addSublayer(effectView.layer)
+                backgroundLayer.addSublayer(effectView.layer)
                 initialized = true
             }
             
@@ -182,22 +180,12 @@ public class ShapeLayer: CAShapeLayer {
         outerShadowLayer.mask = cutLayer
     }
     
-    private func refreshEffect() {
-        guard let shapePath = shapePath else {
-            return
-        }
-        effectLayer.frame = bounds
-        effectView.frame = bounds
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = shapePath.cgPath
-        effectLayer.mask = cutLayer
-    }
-    
     private func refreshBackground() {
         guard let shapePath = shapePath else {
             return
         }
         backgroundLayer.frame = bounds
+        effectView.frame = bounds
         let cutLayer = CAShapeLayer()
         cutLayer.path = shapePath.cgPath
         backgroundLayer.mask = cutLayer
@@ -206,7 +194,6 @@ public class ShapeLayer: CAShapeLayer {
     private func refresh() {
         refreshOuter()
         refreshInner()
-        refreshEffect()
         refreshBackground()
         
         if let shapePath = shapePath {
@@ -214,18 +201,6 @@ public class ShapeLayer: CAShapeLayer {
             cutLayer.path = shapePath.cgPath
             didUpdateLayer?(cutLayer)
         }
-    }
-    
-}
-
-class ShapeEffectView: UIVisualEffectView {
-    
-    override final class var layerClass: AnyClass {
-        return CAShapeLayer.self
-    }
-    
-    override var layer: CAShapeLayer {
-        return super.layer as! CAShapeLayer
     }
     
 }
