@@ -59,15 +59,21 @@ open class ShapeView: UIView {
         }
     }
     
-    public var blurEffectStyle: UIBlurEffect.Style? {
-        didSet {
-            blur()
+    public var effect: UIVisualEffect? {
+        get {
+            return shapeLayer.effect
+        }
+        set {
+            shapeLayer.effect = newValue
         }
     }
     
-    public var blurAlpha: CGFloat = 0 {
-        didSet {
-            blur()
+    public var effectAlpha: CGFloat {
+        get {
+            return shapeLayer.effectAlpha
+        }
+        set {
+            shapeLayer.effectAlpha = newValue
         }
     }
     
@@ -95,14 +101,6 @@ open class ShapeView: UIView {
         didSet {
             shapeLayer.frame = bounds
         }
-    }
-    
-    private func blur() {
-        guard let style = blurEffectStyle else {
-            return
-        }
-        shapeLayer.effectView.effect = UIBlurEffect(style: style)
-        shapeLayer.effectView.alpha = blurAlpha
     }
     
     private func createConstraints() {

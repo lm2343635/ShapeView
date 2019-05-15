@@ -44,19 +44,27 @@ public struct ShapeShadow {
 
 fileprivate extension CAShapeLayer {
     
-    func setShapeShadow(_ shadow: ShapeShadow) {
-        shadowRadius = shadow.radius
-        shadowColor = shadow.color.cgColor
-        shadowOpacity = shadow.opacity
-        shadowOffset = shadow.offset
-        fillColor = shadow.color.cgColor
+    var shapeShadow: ShapeShadow? {
+        get {
+            guard let shadowColor = shadowColor, shadowColor == fillColor else {
+                return nil
+            }
+            return ShapeShadow(radius: shadowRadius, color: UIColor(cgColor: shadowColor), opacity: shadowOpacity, offset: shadowOffset)
+        }
+        set {
+            shadowRadius = newValue?.radius ?? 0
+            shadowColor = newValue?.color.cgColor
+            shadowOpacity = newValue?.opacity ?? 0
+            shadowOffset = newValue?.offset ?? .zero
+            fillColor = newValue?.color.cgColor
+        }
     }
     
 }
 
 public class ShapeLayer: CAShapeLayer {
     
-    lazy var effectView = UIVisualEffectView()
+    private let effectView = UIVisualEffectView()
     
     private let outerShadowLayer = CAShapeLayer()
     private let backgroundLayer = CALayer()
@@ -98,6 +106,24 @@ public class ShapeLayer: CAShapeLayer {
         }
     }
     
+    public var effect: UIVisualEffect? {
+        get {
+            return effectView.effect
+        }
+        set {
+            effectView.effect = newValue
+        }
+    }
+    
+    public var effectAlpha: CGFloat {
+        get {
+            return effectView.alpha
+        }
+        set {
+            effectView.alpha = newValue
+        }
+    }
+    
     public var didUpdateLayer: ((CAShapeLayer) -> Void)?
     
     open override var backgroundColor: CGColor? {
@@ -118,6 +144,7 @@ public class ShapeLayer: CAShapeLayer {
                 addSublayer(outerShadowLayer)
                 addSublayer(backgroundLayer)
                 addSublayer(innerShadowLayer)
+                effectView.alpha = 0
                 backgroundLayer.addSublayer(effectView.layer)
                 initialized = true
             }
@@ -152,7 +179,7 @@ public class ShapeLayer: CAShapeLayer {
             path.append(shapePath)
             return path
         }().cgPath
-        innerShadowLayer.setShapeShadow(shadow)
+        innerShadowLayer.shapeShadow = shadow
         
         let cutLayer = CAShapeLayer()
         cutLayer.path = shapePath.cgPath
@@ -166,7 +193,7 @@ public class ShapeLayer: CAShapeLayer {
         }
         outerShadowLayer.isHidden = false
         outerShadowLayer.path = shapePath.cgPath
-        outerShadowLayer.setShapeShadow(shadow)
+        outerShadowLayer.shapeShadow = shadow
         
         let cutLayer = CAShapeLayer()
         cutLayer.path = { () -> UIBezierPath in
