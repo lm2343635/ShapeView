@@ -44,12 +44,20 @@ public struct ShapeShadow {
 
 fileprivate extension CAShapeLayer {
     
-    func setShapeShadow(_ shadow: ShapeShadow) {
-        shadowRadius = shadow.radius
-        shadowColor = shadow.color.cgColor
-        shadowOpacity = shadow.opacity
-        shadowOffset = shadow.offset
-        fillColor = shadow.color.cgColor
+    var shapeShadow: ShapeShadow? {
+        get {
+            guard let shadowColor = shadowColor, shadowColor == fillColor else {
+                return nil
+            }
+            return ShapeShadow(radius: shadowRadius, color: UIColor(cgColor: shadowColor), opacity: shadowOpacity, offset: shadowOffset)
+        }
+        set {
+            shadowRadius = newValue?.radius ?? 0
+            shadowColor = newValue?.color.cgColor
+            shadowOpacity = newValue?.opacity ?? 0
+            shadowOffset = newValue?.offset ?? .zero
+            fillColor = newValue?.color.cgColor
+        }
     }
     
 }
@@ -152,7 +160,7 @@ public class ShapeLayer: CAShapeLayer {
             path.append(shapePath)
             return path
         }().cgPath
-        innerShadowLayer.setShapeShadow(shadow)
+        innerShadowLayer.shapeShadow = shadow
         
         let cutLayer = CAShapeLayer()
         cutLayer.path = shapePath.cgPath
@@ -166,7 +174,7 @@ public class ShapeLayer: CAShapeLayer {
         }
         outerShadowLayer.isHidden = false
         outerShadowLayer.path = shapePath.cgPath
-        outerShadowLayer.setShapeShadow(shadow)
+        outerShadowLayer.shapeShadow = shadow
         
         let cutLayer = CAShapeLayer()
         cutLayer.path = { () -> UIBezierPath in
