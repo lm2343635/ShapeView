@@ -4,8 +4,8 @@ ShapeView support to create a view with the customized shape, shadow and transpa
 
 ## Installation
 
-ShapeView is available through [CocoaPods](https://cocoapods.org). To install
-it, simply add the following line to your Podfile:
+ShapeView is available through [CocoaPods](https://cocoapods.org). 
+To install it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'ShapeView'
@@ -18,8 +18,8 @@ ShapeView supports the following attributes.
 - `path: ShapePath?`
 - `outerShadow: ShapeShadow`
 - `innerShadow: ShapeShadow`
-- `blurEffectStyle: UIBlurEffect.Style?`
-- `blurAlpha: CGFloat`
+- `effect: UIVisualEffect?`
+- `effectAlpha: CGFloat`
 - `backgroundColor: UIColor?`
 
 To create a customized shape, use ```.custom``` to draw the shape as the following.
@@ -68,11 +68,13 @@ Run the demp application to find more.
 
 #### Using ShapeLayer
 
-We provide `ShapeLayer` for developers to apply it to your view directly.
+We provide `ShapeLayer` for developers to apply it to your customized view directly.
 
 - `layerPath: ShapePath?` 
 - `var outerShadow: ShapeShadow?`
 - `var innerShadow: ShapeShadow?`
+- `effect: UIVisualEffect?`
+- `effectAlpha: CGFloat`
 - `var didUpdateLayer: ((CAShapeLayer) -> Void)?`
 - `var backgroundColor: CGColor?`
 
@@ -85,7 +87,7 @@ Developers can update the parent view with the first parameter in this closure.
 
 ### Necessity to implement by ourselves
 
-It is hard to create a customized shape with shadow and transparent background for UIView.
+It is hard to create a customized shape with shadow and transparent background for UIView using the SDK provided by Apple.
 We have tried to and shadow into the customized shape layer directly with the following code.
 
 ```Swift
