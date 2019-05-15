@@ -164,8 +164,8 @@ class ViewController: UIViewController {
     private lazy var messageView: MessageView = {
         let view = MessageView(frame: .zero)
         view.backgroundColor = UIColor(white: 1, alpha: 0.5)
-        view.blurEffectStyle = .regular
-        view.blurAlpha = 0.7
+        view.effect = UIBlurEffect(style: .regular)
+        view.effectAlpha = 0.7
         view.button.setTitle("ShapeView Demo App", for: .normal)
         return view
     }()
@@ -182,8 +182,8 @@ class ViewController: UIViewController {
         view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         view.innerShadow = ShapeShadow(radius: 8, color: .white)
         view.outerShadow = ShapeShadow(radius: 8, color: .white)
-        view.blurEffectStyle = .dark
-        view.blurAlpha = 0.8
+        view.effect = UIBlurEffect(style: .dark)
+        view.effectAlpha = 0.8
         return view
     }()
     

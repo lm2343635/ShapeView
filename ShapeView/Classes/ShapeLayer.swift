@@ -64,7 +64,7 @@ fileprivate extension CAShapeLayer {
 
 public class ShapeLayer: CAShapeLayer {
     
-    lazy var effectView = UIVisualEffectView()
+    private let effectView = UIVisualEffectView()
     
     private let outerShadowLayer = CAShapeLayer()
     private let backgroundLayer = CALayer()
@@ -106,6 +106,24 @@ public class ShapeLayer: CAShapeLayer {
         }
     }
     
+    public var effect: UIVisualEffect? {
+        get {
+            return effectView.effect
+        }
+        set {
+            effectView.effect = newValue
+        }
+    }
+    
+    public var effectAlpha: CGFloat {
+        get {
+            return effectView.alpha
+        }
+        set {
+            effectView.alpha = newValue
+        }
+    }
+    
     public var didUpdateLayer: ((CAShapeLayer) -> Void)?
     
     open override var backgroundColor: CGColor? {
@@ -126,6 +144,7 @@ public class ShapeLayer: CAShapeLayer {
                 addSublayer(outerShadowLayer)
                 addSublayer(backgroundLayer)
                 addSublayer(innerShadowLayer)
+                effectView.alpha = 0
                 backgroundLayer.addSublayer(effectView.layer)
                 initialized = true
             }
