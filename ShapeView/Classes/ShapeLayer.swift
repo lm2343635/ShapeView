@@ -64,15 +64,15 @@ fileprivate extension CAShapeLayer {
 
 public class ShapeLayer: CAShapeLayer {
     
-    private let effectView = UIVisualEffectView()
-    
     private let outerShadowLayer = CAShapeLayer()
     private let backgroundLayer = CALayer()
     private let innerShadowLayer = CAShapeLayer()
+    private let effectLayer = CAShapeLayer()
+    private let effectView = UIVisualEffectView()
     
     // The shadow path is drawed by the closure drawShape.
     // When the drawShape cloure is updated, the shapePath should be updated.
-    private var shapePath: UIBezierPath?
+    private var shapePath = UIBezierPath(rect: .zero)
     
     // The screen path is used for creating the mask to cut the shadow layer.
     // When the bounds is updated, it should be updated.
@@ -133,22 +133,38 @@ public class ShapeLayer: CAShapeLayer {
         }
     }
     
-    private var initialized = false
+    override public init() {
+        super.init()
+        initialize()
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        initialize()
+    }
+    
+    private func initialize() {
+        addSublayer(outerShadowLayer)
+        addSublayer(backgroundLayer)
+        addSublayer(effectLayer)
+        addSublayer(innerShadowLayer)
+        
+        backgroundLayer.masksToBounds = true
+        
+        innerShadowLayer.masksToBounds = true
+        innerShadowLayer.fillRule = .evenOdd
+        
+        effectLayer.addSublayer(effectView.layer)
+        effectLayer.masksToBounds = true
+        
+        effectView.alpha = 0
+    }
     
     open override var bounds: CGRect {
         didSet {
             guard bounds != .zero else {
                 return
             }
-            if !initialized {
-                addSublayer(outerShadowLayer)
-                addSublayer(backgroundLayer)
-                addSublayer(innerShadowLayer)
-                effectView.alpha = 0
-                backgroundLayer.addSublayer(effectView.layer)
-                initialized = true
-            }
-            
             updateShapePath()
             refresh()
         }
@@ -165,69 +181,77 @@ public class ShapeLayer: CAShapeLayer {
     }
     
     private func refreshInner() {
-        guard let shapePath = shapePath, let shadow = innerShadow else {
+        guard let innerShadow = innerShadow else {
             innerShadowLayer.isHidden = true
             return
         }
         innerShadowLayer.isHidden = false
         innerShadowLayer.frame = bounds
-        innerShadowLayer.masksToBounds = true
-        innerShadowLayer.fillRule = .evenOdd
-        innerShadowLayer.path = { () -> UIBezierPath in
+        innerShadowLayer.shapeShadow = innerShadow
+        innerShadowLayer.path = {
             let path = UIBezierPath()
             path.append(screenPath)
             path.append(shapePath)
-            return path
-        }().cgPath
-        innerShadowLayer.shapeShadow = shadow
-        
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = shapePath.cgPath
-        innerShadowLayer.mask = cutLayer
+            return path.cgPath
+            }()
+        innerShadowLayer.mask = {
+            let cutLayer = CAShapeLayer()
+            cutLayer.path = shapePath.cgPath
+            return cutLayer
+        }()
     }
     
     private func refreshOuter() {
-        guard let shapePath = shapePath, let shadow = outerShadow else {
+        guard let outerShadow = outerShadow else {
             outerShadowLayer.isHidden = true
             return
         }
         outerShadowLayer.isHidden = false
         outerShadowLayer.path = shapePath.cgPath
-        outerShadowLayer.shapeShadow = shadow
-        
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = { () -> UIBezierPath in
-            let path = UIBezierPath()
-            path.append(shapePath)
-            path.append(screenPath)
-            path.usesEvenOddFillRule = true
-            return path
-        }().cgPath
-        cutLayer.fillRule = .evenOdd
-        outerShadowLayer.mask = cutLayer
+        outerShadowLayer.shapeShadow = outerShadow
+        outerShadowLayer.mask = {
+            let cutLayer = CAShapeLayer()
+            cutLayer.path = {
+                let path = UIBezierPath()
+                path.append(shapePath)
+                path.append(screenPath)
+                path.usesEvenOddFillRule = true
+                return path.cgPath
+            }()
+            cutLayer.fillRule = .evenOdd
+            return cutLayer
+        }()
     }
     
     private func refreshBackground() {
-        guard let shapePath = shapePath else {
-            return
-        }
         backgroundLayer.frame = bounds
+        backgroundLayer.mask = {
+            let cutLayer = CAShapeLayer()
+            cutLayer.path = shapePath.cgPath
+            return cutLayer
+        }()
+    }
+    
+    private func refreshEffect() {
+        effectLayer.frame = bounds
+        effectLayer.mask = {
+            let cutLayer = CAShapeLayer()
+            cutLayer.path = shapePath.cgPath
+            return cutLayer
+        }()
+        
         effectView.frame = bounds
-        let cutLayer = CAShapeLayer()
-        cutLayer.path = shapePath.cgPath
-        backgroundLayer.mask = cutLayer
     }
     
     private func refresh() {
         refreshOuter()
         refreshInner()
         refreshBackground()
+        refreshEffect()
         
-        if let shapePath = shapePath {
-            let cutLayer = CAShapeLayer()
-            cutLayer.path = shapePath.cgPath
-            didUpdateLayer?(cutLayer)
-        }
+        let cutLayer = CAShapeLayer()
+        cutLayer.path = shapePath.cgPath
+        didUpdateLayer?(cutLayer)
     }
     
 }
