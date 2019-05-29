@@ -190,20 +190,23 @@ class ViewController: UIViewController {
     private lazy var starView: ShapeView = {
         let view = ShapeView()
         view.path = .star(vertex: 5) { [unowned view] in
-            return view.bounds
+            view.bounds
         }
         view.backgroundColor = .yellow
         view.outerShadow = ShapeShadow(radius: 8, color: .white)
         return view
     }()
     
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.dataSource = self
-        tableView.register(TableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.rowHeight = 100
-        tableView.backgroundColor = .clear
-        return tableView
+    private lazy var cuteDialogView: ShapeView = {
+        let view = ShapeView()
+        view.path = ShapePath.cuteDialog(radius: 10, arrowPosition: .leftBottom(width: 20, height: 10)) { [unowned view] in
+            view.bounds
+        }
+        view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
+        view.outerShadow = ShapeShadow(radius: 8, color: .white)
+        view.effect = UIBlurEffect(style: .dark)
+        view.effectAlpha = 0.8
+        return view
     }()
     
     override func viewDidLoad() {
@@ -214,35 +217,9 @@ class ViewController: UIViewController {
         view.addSubview(errorView)
         view.addSubview(customView)
         view.addSubview(starView)
-        view.addSubview(tableView)
+        view.addSubview(cuteDialogView)
         createConstraints()
         
-        /**
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.messageView.shadowColor = .darkGray
-            self.messageView.shaowOffset = CGSize(width: 10, height: 10)
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            self.messageView.blurEffectStyle = .dark
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            self.messageView.path = .corner(radius: 10) {
-                return self.messageView.bounds
-            }
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4) {
-            self.messageView.blurAlpha = 0.5
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            self.messageView.path = .dialog(radius: 10, arrowPosition: .right(center: 50, width: 40, height: 20)) {
-                return self.messageView.bounds
-            }
-        }
-         */
     }
     
     private func createConstraints() {
@@ -276,29 +253,12 @@ class ViewController: UIViewController {
             $0.top.equalTo(customView.snp.bottom).offset(20)
         }
         
-        tableView.snp.makeConstraints {
-            $0.left.right.bottom.equalToSuperview()
+        cuteDialogView.snp.makeConstraints {
+            $0.centerX.equalTo(messageView)
+            $0.size.equalTo(messageView)
             $0.top.equalTo(starView.snp.bottom).offset(20)
         }
         
     }
 
 }
-
-extension ViewController: UITableViewDataSource {
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? TableViewCell else {
-            return UITableViewCell()
-        }
-        
-        return cell
-    }
-    
-    
-}
-
