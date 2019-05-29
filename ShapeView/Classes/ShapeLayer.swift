@@ -143,6 +143,11 @@ public class ShapeLayer: CAShapeLayer {
         initialize()
     }
     
+    public override init(layer: Any) {
+        super.init(layer: layer)
+        initialize()
+    }
+    
     private func initialize() {
         addSublayer(outerShadowLayer)
         addSublayer(backgroundLayer)
