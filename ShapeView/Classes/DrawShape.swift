@@ -216,7 +216,6 @@ public struct ShapePath {
     }
     
     public static func cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
-        
         let drawShape: DrawShape = {
             let bounds = bounds()
             switch arrowPosition {
@@ -250,7 +249,34 @@ public struct ShapePath {
                     clockwise: true
                 )
             case .rightBottom(let width, let height):
-                break
+                $0.move(to: CGPoint(x: radius, y: 0))
+                $0.addArc(
+                    withCenter: CGPoint(x: bounds.width - radius, y: radius),
+                    radius: radius,
+                    startAngle: -.pi / 2,
+                    endAngle: 0,
+                    clockwise: true
+                )
+                $0.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
+                $0.addCurve(
+                    to: CGPoint(x: bounds.width - width, y: bounds.height - height),
+                    controlPoint1: CGPoint(x: bounds.width, y: bounds.height - height / 2),
+                    controlPoint2: CGPoint(x: bounds.width - width / 2, y: bounds.height - height)
+                )
+                $0.addArc(
+                    withCenter: CGPoint(x: radius, y: bounds.height - height - radius),
+                    radius: radius,
+                    startAngle: .pi / 2,
+                    endAngle: .pi,
+                    clockwise: true
+                )
+                $0.addArc(
+                    withCenter: CGPoint(x: radius, y: radius),
+                    radius: radius,
+                    startAngle: -.pi,
+                    endAngle: -.pi / 2,
+                    clockwise: true
+                )
             }
         }
         return .init(drawShape: drawShape)
