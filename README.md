@@ -30,11 +30,23 @@ view.path = .custom { [unowned view] in
     let radius = labelHeight / 2
 
     $0.move(to: CGPoint(x: radius, y: 0))
-    $0.addArc(withCenter: CGPoint(x: view.frame.width - radius, y: radius), radius: radius, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
+    $0.addArc(
+        withCenter: CGPoint(x: view.frame.width - radius, y: radius), 
+        radius: radius, 
+        startAngle: -.pi / 2, 
+        endAngle: .pi / 2, 
+        clockwise: true
+    )
     $0.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
     $0.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: view.frame.height))
     $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
-    $0.addArc(withCenter: CGPoint(x: radius, y: radius), radius: radius, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
+    $0.addArc(
+        withCenter: CGPoint(x: radius, y: radius), 
+        radius: radius, 
+        startAngle: .pi / 2, 
+        endAngle: -.pi / 2, 
+        clockwise: true
+    )
 }
 ```
 
@@ -45,9 +57,10 @@ In the demo app, a dialog view is created with the code above.
 Some shapes are prepared in the ShapeView struct.
 
 ```Swift
-corner(radius: CGFloat, bounds: @escaping () -> CGRect)
-dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping () -> CGRect)
-star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping () -> CGRect)
+corner(radius: CGFloat, bounds: @escaping GetBounds)
+dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping GetBounds)
+cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds)
+star(vertex: Int, extrusion: CGFloat = 10, bounds: GetBounds)
 ```
 
 Here is a demo to create a dialog view.

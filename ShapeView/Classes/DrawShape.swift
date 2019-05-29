@@ -37,7 +37,7 @@ public struct ShapePath {
         return .init(drawShape: drawShape)
     }
     
-    public static func corner(radius: CGFloat, bounds: @escaping () -> CGRect) -> ShapePath {
+    public static func corner(radius: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
         let drawShape: DrawShape = {
             let bounds = bounds()
             $0.move(to: CGPoint(x: radius, y: 0))

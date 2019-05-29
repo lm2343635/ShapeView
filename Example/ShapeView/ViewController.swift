@@ -34,11 +34,23 @@ class MessageView: ShapeView {
             let raduis = labelHeight / 2
             
             $0.move(to: CGPoint(x: raduis, y: 0))
-            $0.addArc(withCenter: CGPoint(x: self.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
+            $0.addArc(
+                withCenter: CGPoint(x: self.frame.width - raduis, y: raduis),
+                radius: raduis,
+                startAngle: -.pi / 2,
+                endAngle: .pi / 2,
+                clockwise: true
+            )
             $0.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
             $0.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: self.frame.height))
             $0.addLine(to: CGPoint(x: Const.left, y: labelHeight))
-            $0.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
+            $0.addArc(
+                withCenter: CGPoint(x: raduis, y: raduis),
+                radius: raduis,
+                startAngle: .pi / 2,
+                endAngle: -.pi / 2,
+                clockwise: true
+            )
         }
 
         outerShadow = ShapeShadow(radius: 20, color: .green)
@@ -88,11 +100,23 @@ class ErrorView: UIView {
 
         let path = UIBezierPath()
         path.move(to: CGPoint(x: raduis, y: 0))
-        path.addArc(withCenter: CGPoint(x: self.frame.width - raduis, y: raduis), radius: raduis, startAngle: -.pi / 2, endAngle: .pi / 2, clockwise: true)
+        path.addArc(
+            withCenter: CGPoint(x: self.frame.width - raduis, y: raduis),
+            radius: raduis,
+            startAngle: -.pi / 2,
+            endAngle: .pi / 2,
+            clockwise: true
+        )
         path.addLine(to: CGPoint(x: Const.left + Const.height, y: labelHeight))
         path.addLine(to: CGPoint(x: Const.left + Const.height / 2, y: self.frame.height))
         path.addLine(to: CGPoint(x: Const.left, y: labelHeight))
-        path.addArc(withCenter: CGPoint(x: raduis, y: raduis), radius: raduis, startAngle: .pi / 2, endAngle: -.pi / 2, clockwise: true)
+        path.addArc(
+            withCenter: CGPoint(x: raduis, y: raduis),
+            radius: raduis,
+            startAngle: .pi / 2,
+            endAngle: -.pi / 2,
+            clockwise: true
+        )
         path.close()
 
         let shapeLayer = CAShapeLayer()
@@ -199,7 +223,7 @@ class ViewController: UIViewController {
     
     private lazy var cuteDialogView: ShapeView = {
         let view = ShapeView()
-        view.path = ShapePath.cuteDialog(radius: 10, arrowPosition: .rightBottom(width: 20, height: 10)) { [unowned view] in
+        view.path = .cuteDialog(radius: 10, arrowPosition: .rightBottom(width: 20, height: 10)) { [unowned view] in
             view.bounds
         }
         view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
