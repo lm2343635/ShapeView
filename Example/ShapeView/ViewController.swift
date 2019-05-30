@@ -223,7 +223,7 @@ class ViewController: UIViewController {
     
     private lazy var cuteDialogView: ShapeView = {
         let view = ShapeView()
-        view.path = .cuteDialog(radius: 10, arrowPosition: .rightBottom(width: 20, height: 10)) { [unowned view] in
+        view.path = .cuteDialog(radius: 10, arrowPosition: .leftBottom(width: 60, height: 15)) { [unowned view] in
             view.bounds
         }
         view.backgroundColor = UIColor(white: 0.5, alpha: 0.5)

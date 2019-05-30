@@ -235,11 +235,17 @@ public struct ShapePath {
                     endAngle: .pi / 2,
                     clockwise: true
                 )
+                let vertexOffset = height / 4
                 $0.addLine(to: CGPoint(x: width, y: bounds.height - height))
                 $0.addCurve(
-                    to: CGPoint(x: 0, y: bounds.height),
-                    controlPoint1: CGPoint(x: width / 2, y: bounds.height - height),
-                    controlPoint2: CGPoint(x: 0, y: bounds.height - height / 2)
+                    to: CGPoint(x: vertexOffset, y: bounds.height),
+                    controlPoint1: CGPoint(x: vertexOffset + (width - vertexOffset) / 3 * 2, y: bounds.height - height),
+                    controlPoint2: CGPoint(x: vertexOffset + (width - vertexOffset) / 3, y: bounds.height - height / 3 * 2)
+                )
+                $0.addCurve(to:
+                    CGPoint(x: 0, y: bounds.height - vertexOffset * 2),
+                    controlPoint1: CGPoint(x: vertexOffset / 2, y: bounds.height),
+                    controlPoint2: CGPoint(x: 0, y: bounds.height - vertexOffset)
                 )
                 $0.addArc(
                     withCenter: CGPoint(x: radius, y: radius),
@@ -257,11 +263,16 @@ public struct ShapePath {
                     endAngle: 0,
                     clockwise: true
                 )
-                $0.addLine(to: CGPoint(x: bounds.width, y: bounds.height))
+                let vertexOffset = height / 4
+                $0.addLine(to: CGPoint(x: bounds.width, y: bounds.height - vertexOffset * 2))
+                $0.addCurve(
+                    to: CGPoint(x: bounds.width - vertexOffset, y: bounds.height),
+                    controlPoint1: CGPoint(x: bounds.width, y: bounds.height - vertexOffset),
+                    controlPoint2: CGPoint(x: bounds.width - vertexOffset / 2, y: bounds.height))
                 $0.addCurve(
                     to: CGPoint(x: bounds.width - width, y: bounds.height - height),
-                    controlPoint1: CGPoint(x: bounds.width, y: bounds.height - height / 2),
-                    controlPoint2: CGPoint(x: bounds.width - width / 2, y: bounds.height - height)
+                    controlPoint1: CGPoint(x: bounds.width - (width - vertexOffset) / 3, y: bounds.height - height / 3 * 2),
+                    controlPoint2: CGPoint(x: bounds.width - (width - vertexOffset) / 3 * 2, y: bounds.height - height)
                 )
                 $0.addArc(
                     withCenter: CGPoint(x: radius, y: bounds.height - height - radius),
