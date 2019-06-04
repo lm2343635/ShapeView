@@ -4,4 +4,5 @@ platform :ios, '10.0'
 target 'ShapeView_Example' do
     pod 'ShapeView', :path => '../'
     pod 'SnapKit'
+    pod 'Fakery'
 end

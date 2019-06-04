@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import ShapeView
+import Fakery
 
 class MessageView: ShapeView {
     
@@ -221,6 +222,13 @@ class ViewController: UIViewController {
         return view
     }()
     
+    private lazy var cuteMessageLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Message Test";
+        label.textColor = .white
+        return label
+    }()
+    
     private lazy var cuteDialogView: ShapeView = {
         let view = ShapeView()
         view.path = .cuteDialog(radius: 10, arrowPosition: .leftBottom(width: 60, height: 15)) { [unowned view] in
@@ -230,7 +238,15 @@ class ViewController: UIViewController {
         view.outerShadow = ShapeShadow(radius: 8, color: .white)
         view.effect = UIBlurEffect(style: .dark)
         view.effectAlpha = 0.8
+        view.addSubview(cuteMessageLabel)
         return view
+    }()
+    
+    private lazy var updateMessageButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Update Message", for: .normal)
+        button.addTarget(self, action: #selector(updateMessage), for: .touchUpInside)
+        return button
     }()
     
     override func viewDidLoad() {
@@ -242,11 +258,13 @@ class ViewController: UIViewController {
         view.addSubview(customView)
         view.addSubview(starView)
         view.addSubview(cuteDialogView)
+        view.addSubview(updateMessageButton)
         createConstraints()
         
     }
     
     private func createConstraints() {
+        
         backgroundImageView.snp.makeConstraints {
             $0.left.right.bottom.top.equalToSuperview()
         }
@@ -278,11 +296,26 @@ class ViewController: UIViewController {
         }
         
         cuteDialogView.snp.makeConstraints {
-            $0.centerX.equalTo(messageView)
-            $0.size.equalTo(messageView)
+            $0.left.equalTo(messageView)
             $0.top.equalTo(starView.snp.bottom).offset(20)
         }
         
+        cuteMessageLabel.snp.makeConstraints {
+            $0.left.top.equalToSuperview().offset(20)
+            $0.right.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview().offset(-30)
+        }
+        
+        updateMessageButton.snp.makeConstraints {
+            $0.left.equalTo(messageView)
+            $0.top.equalTo(cuteDialogView.snp.bottom).offset(20)
+        }
+
     }
 
+    @objc private func updateMessage() {
+        let faker = Faker()
+        cuteMessageLabel.text = faker.address.streetAddress()
+    }
+    
 }

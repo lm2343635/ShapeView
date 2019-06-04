@@ -20,6 +20,7 @@ ShapeView support to create a view with the customized shape, shadow and transpa
   s.source           = { :git => 'https://github.com/lm2343635/ShapeView.git', :tag => s.version.to_s }
   
   s.ios.deployment_target = '9.0'
+  s.swift_versions = "5.0"
   s.source_files = 'ShapeView/Classes/**/*'
   
 end

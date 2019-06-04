@@ -1,13 +1,16 @@
 PODS:
-  - ShapeView (0.6)
+  - Fakery (4.0.0)
+  - ShapeView (0.6.2)
   - SnapKit (5.0.0)
 
 DEPENDENCIES:
+  - Fakery
   - ShapeView (from `../`)
   - SnapKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - Fakery
     - SnapKit
 
 EXTERNAL SOURCES:
@@ -15,9 +18,10 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  ShapeView: bc9816f61b15d1069513826745c0b9c135826035
+  Fakery: 476f6d947de432f84703acc830a1e7166330299b
+  ShapeView: d0b16b612c42c07a1aae2c590b0339ed020f9a3a
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
 
-PODFILE CHECKSUM: b643a2f8628e841b466bea1ecaedea61f9af4407
+PODFILE CHECKSUM: 8499ff142fcded3e7685e31bb3d7b0a37e772579
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.1
