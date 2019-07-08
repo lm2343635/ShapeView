@@ -145,7 +145,6 @@ public class ShapeLayer: CAShapeLayer {
     
     public override init(layer: Any) {
         super.init(layer: layer)
-        initialize()
     }
     
     private func initialize() {
