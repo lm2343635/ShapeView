@@ -249,6 +249,15 @@ class ViewController: UIViewController {
         return button
     }()
     
+    private lazy var stripeView: ShapeView = {
+        let view = ShapeView()
+        view.path = .stripe(width: 10, angle: .pi / 3) { [unowned self] in
+            view.bounds
+        }
+        view.backgroundColor = .lightText
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -259,6 +268,7 @@ class ViewController: UIViewController {
         view.addSubview(starView)
         view.addSubview(cuteDialogView)
         view.addSubview(updateMessageButton)
+        view.addSubview(stripeView)
         createConstraints()
         
     }
@@ -309,6 +319,12 @@ class ViewController: UIViewController {
         updateMessageButton.snp.makeConstraints {
             $0.left.equalTo(messageView)
             $0.top.equalTo(cuteDialogView.snp.bottom).offset(20)
+        }
+        
+        stripeView.snp.makeConstraints {
+            $0.height.equalTo(80)
+            $0.left.right.equalToSuperview()
+            $0.top.equalTo(updateMessageButton.snp.bottom).offset(20)
         }
 
     }

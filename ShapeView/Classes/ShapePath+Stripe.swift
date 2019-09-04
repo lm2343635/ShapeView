@@ -28,4 +28,30 @@ import UIKit
 
 extension ShapePath {
     
+    public static func stripe(
+        width: CGFloat = 5,
+        angle: Double = .pi / 4,
+        bounds: @escaping GetBounds
+    ) -> ShapePath {
+        let unitWidth = width / CGFloat(sin(angle))
+        let unitHeight = width / CGFloat(cos(angle))
+        let drawShape: DrawShape = { path in
+            let bounds = bounds()
+            let canvasMaxWidth = bounds.width + bounds.width / CGFloat(tan(angle))
+            var currentWidth: CGFloat = 0
+            var currentHeight: CGFloat = 0
+            var index = 0
+            while currentWidth < canvasMaxWidth {
+                path.move(to: CGPoint(x: currentWidth, y: 0))
+                path.addLine(to: CGPoint(x: currentWidth + unitWidth, y: 0))
+                path.addLine(to: CGPoint(x: 0, y: currentHeight + unitHeight))
+                path.addLine(to: CGPoint(x: 0, y: currentHeight))
+                currentWidth += unitWidth * 2
+                currentHeight += unitHeight * 2
+                index += 1
+            }
+        }
+        return .init(drawShape: drawShape)
+    }
+    
 }
