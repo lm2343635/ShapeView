@@ -251,7 +251,7 @@ class ViewController: UIViewController {
     
     private lazy var stripeView: ShapeView = {
         let view = ShapeView()
-        view.path = .stripe(width: 10, angle: .pi / 3) { [unowned self] in
+        view.path = .stripe(width: 10, angle:  3 * .pi / 4) { [unowned self] in
             view.bounds
         }
         view.backgroundColor = .lightText

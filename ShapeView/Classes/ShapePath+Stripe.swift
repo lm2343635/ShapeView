@@ -33,23 +33,68 @@ extension ShapePath {
         angle: Double = .pi / 4,
         bounds: @escaping GetBounds
     ) -> ShapePath {
-        let unitWidth = width / CGFloat(sin(angle))
-        let unitHeight = width / CGFloat(cos(angle))
-        let drawShape: DrawShape = { path in
-            let bounds = bounds()
-            let canvasMaxWidth = bounds.width + bounds.width / CGFloat(tan(angle))
-            var currentWidth: CGFloat = 0
-            var currentHeight: CGFloat = 0
-            var index = 0
-            while currentWidth < canvasMaxWidth {
-                path.move(to: CGPoint(x: currentWidth, y: 0))
-                path.addLine(to: CGPoint(x: currentWidth + unitWidth, y: 0))
-                path.addLine(to: CGPoint(x: 0, y: currentHeight + unitHeight))
-                path.addLine(to: CGPoint(x: 0, y: currentHeight))
-                currentWidth += unitWidth * 2
-                currentHeight += unitHeight * 2
-                index += 1
+        let drawShape: DrawShape
+        switch angle {
+        case 0, .pi:
+            drawShape = { path in
+                let bounds = bounds()
+                var currentHeight: CGFloat = 0
+                while currentHeight < bounds.height {
+                    path.move(to: CGPoint(x: 0, y: currentHeight))
+                    path.addLine(to: CGPoint(x: bounds.width, y: currentHeight))
+                    path.addLine(to: CGPoint(x: bounds.width, y: currentHeight + width))
+                    path.addLine(to: CGPoint(x: 0, y: currentHeight + width))
+                    currentHeight += width * 2
+                }
             }
+        case 0 ..< .pi / 2:
+            let unitWidth = width / CGFloat(sin(angle))
+            let unitHeight = width / CGFloat(cos(angle))
+            drawShape = { path in
+                let bounds = bounds()
+                let canvasMaxWidth = bounds.width + bounds.width / CGFloat(tan(angle))
+                var currentWidth: CGFloat = 0
+                var currentHeight: CGFloat = 0
+                while currentWidth < canvasMaxWidth {
+                    path.move(to: CGPoint(x: currentWidth, y: 0))
+                    path.addLine(to: CGPoint(x: currentWidth + unitWidth, y: 0))
+                    path.addLine(to: CGPoint(x: 0, y: currentHeight + unitHeight))
+                    path.addLine(to: CGPoint(x: 0, y: currentHeight))
+                    currentWidth += unitWidth * 2
+                    currentHeight += unitHeight * 2
+                }
+            }
+        case .pi / 2:
+            drawShape = { path in
+                let bounds = bounds()
+                var currentWidth: CGFloat = 0
+                while currentWidth < bounds.width {
+                    path.move(to: CGPoint(x: currentWidth, y: 0))
+                    path.addLine(to: CGPoint(x: currentWidth + width, y: 0))
+                    path.addLine(to: CGPoint(x: currentWidth + width, y: bounds.height))
+                    path.addLine(to: CGPoint(x: currentWidth, y: bounds.height))
+                    currentWidth += width * 2
+                }
+            }
+        case .pi / 2 ..< .pi:
+            let unitWidth = width / CGFloat(sin(angle))
+            let unitHeight = width / CGFloat(cos(angle))
+            drawShape = { path in
+                let bounds = bounds()
+                let canvasMaxWidth = bounds.width - bounds.width / CGFloat(tan(angle))
+                var currentWidth: CGFloat = 0
+                var currentHeight: CGFloat = bounds.height
+                while currentWidth < canvasMaxWidth {
+                    path.move(to: CGPoint(x: currentWidth, y: bounds.height))
+                    path.addLine(to: CGPoint(x: currentWidth + unitWidth, y: bounds.height))
+                    path.addLine(to: CGPoint(x: 0, y: currentHeight + unitHeight))
+                    path.addLine(to: CGPoint(x: 0, y: currentHeight))
+                    currentWidth += unitWidth * 2
+                    currentHeight += unitHeight * 2
+                }
+            }
+        default:
+            fatalError("Angle must be in [0, pi]")
         }
         return .init(drawShape: drawShape)
     }
