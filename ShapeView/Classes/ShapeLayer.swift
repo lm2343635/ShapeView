@@ -197,7 +197,7 @@ public class ShapeLayer: CAShapeLayer {
             path.append(screenPath)
             path.append(shapePath)
             return path.cgPath
-            }()
+        }()
         innerShadowLayer.mask = {
             let cutLayer = CAShapeLayer()
             cutLayer.path = shapePath.cgPath
