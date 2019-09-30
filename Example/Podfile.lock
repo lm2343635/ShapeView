@@ -1,7 +1,7 @@
 PODS:
-  - Fakery (4.0.0)
-  - ShapeView (0.6.3)
-  - SnapKit (5.0.0)
+  - Fakery (4.1.1)
+  - ShapeView (0.6.4)
+  - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - Fakery
@@ -18,9 +18,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Fakery: 476f6d947de432f84703acc830a1e7166330299b
-  ShapeView: a1c1198596558cf79049bc8d1619e52d570a62ce
-  SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
+  Fakery: d3380c4aa1efe7631c0831d7e26aa9db4491f014
+  ShapeView: 60987ea1bd28f0816f6e20d356042b75cd500c94
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
 PODFILE CHECKSUM: 8499ff142fcded3e7685e31bb3d7b0a37e772579
 
