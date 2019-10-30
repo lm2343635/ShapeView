@@ -11,7 +11,7 @@ To install it, simply add the following line to your Podfile:
 pod 'ShapeView'
 ```
 
-#### Using ShapeView
+### Using ShapeView
 
 ShapeView supports the following attributes.
 
@@ -22,7 +22,7 @@ ShapeView supports the following attributes.
 - `effectAlpha: CGFloat`
 - `backgroundColor: UIColor?`
 
-To create a customized shape, use ```.custom``` to draw the shape as the following.
+To create a customized shape, use `.custom` to draw the shape as the following.
 
 ```Swift
 view.path = .custom { [unowned view] in
@@ -50,11 +50,13 @@ view.path = .custom { [unowned view] in
 }
 ```
 
+### Using prepared shapes
+
 In the demo app, a dialog view is created with the code above.
 
 ![Demo](https://raw.githubusercontent.com/lm2343635/ShapeView/master/screenshoots/demo.png)
 
-Some shapes are prepared in the ShapeView struct.
+The following shapes are prepared.
 
 ```Swift
 corner(radius: CGFloat, bounds: @escaping GetBounds)
@@ -77,9 +79,27 @@ view.outerShadow = ShapeShadow(
 )
 ```
 
+### Multiple shapes
+
+ShapeView supports to add multiple shapes with `.multiple()` as the following.
+
+```swift
+view.path = .multiple(
+    .hollowCorner(radius: 12, outlineWidth: 2) { [unowned view] in
+        view.bounds
+    },
+    .star(vertex: 5, extrusion: 20) { [unowned view] in
+        view.bounds
+    },
+    .custom { [unowned view] in
+        // Add a custom shape here.    
+    }
+)
+```
+
 Run the demp application to find more.
 
-#### Using ShapeLayer
+### Using ShapeLayer
 
 We provide `ShapeLayer` for developers to apply it to your customized view directly.
 
