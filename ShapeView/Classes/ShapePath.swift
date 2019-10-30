@@ -30,6 +30,10 @@ public typealias GetBounds = (() -> CGRect)
 
 public struct DrawShape {
     var draw: ((UIBezierPath) -> Void)
+    
+    public static func custom(_ draw: @escaping ((UIBezierPath) -> Void)) -> DrawShape {
+        DrawShape(draw: draw)
+    }
 }
 
 public struct ShapePath {
@@ -41,7 +45,7 @@ public struct ShapePath {
     }
     
     public static func custom(_ draw: @escaping ((UIBezierPath) -> Void)) -> ShapePath {
-        return .multiple(DrawShape(draw: draw))
+        return .multiple(.custom(draw))
     }
     
     public static func multiple(_ drawShapes: DrawShape...) -> ShapePath {

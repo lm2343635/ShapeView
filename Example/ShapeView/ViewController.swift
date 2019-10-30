@@ -260,9 +260,14 @@ class ViewController: UIViewController {
     
     private lazy var hollowView: ShapeView = {
         let view = ShapeView()
-        view.path = .hollowCorner(radius: 12, outlineWidth: 2) { [unowned view] in
-            view.bounds
-        }
+        view.path = .multiple(
+            .hollowCorner(radius: 12, outlineWidth: 2) { [unowned view] in
+                view.bounds
+            },
+            .star(vertex: 5, extrusion: 20) { [unowned view] in
+                view.bounds
+            }
+        )
         view.backgroundColor = .systemBlue
         return view
     }()
@@ -338,9 +343,8 @@ class ViewController: UIViewController {
         }
         
         hollowView.snp.makeConstraints {
-            $0.height.equalTo(80)
-            $0.left.equalToSuperview().offset(30)
-            $0.right.equalToSuperview().offset(-30)
+            $0.size.equalTo(80)
+            $0.centerX.equalToSuperview()
             $0.top.equalTo(stripeView.snp.bottom).offset(20)
         }
 
