@@ -57,7 +57,7 @@ extension ShapePath {
                 angle += angleIncrement
             }
         }
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
 }

@@ -175,13 +175,14 @@ public class ShapeLayer: CAShapeLayer {
     }
     
     private func updateShapePath() {
-        let drawShape = layerPath?.drawShape
-        shapePath = (drawShape == nil) ? UIBezierPath(rect: bounds) : {
-            let path = UIBezierPath()
-            drawShape?(path)
-            path.close()
-            return path
-        }()
+        guard let drawShapes = layerPath?.drawShapes else {
+            shapePath = UIBezierPath(rect: bounds)
+            return
+        }
+        let path = UIBezierPath()
+        drawShapes.forEach { $0(path) }
+        path.close()
+        shapePath = path
     }
     
     private func refreshInner() {

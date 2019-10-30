@@ -179,7 +179,7 @@ extension ShapePath {
                 )
             }
         }
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
     public static func cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
@@ -257,7 +257,7 @@ extension ShapePath {
                 )
             }
         }
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
 }

@@ -61,7 +61,7 @@ extension ShapePath {
                 clockwise: true
             )
         }
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
     public static func hollowCorner(radius: CGFloat, outlineWidth: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
@@ -87,7 +87,7 @@ extension ShapePath {
                 return path
             }().reversing())
         }
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
 }

@@ -96,7 +96,7 @@ extension ShapePath {
         default:
             fatalError("Angle must be in [0, pi]")
         }
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
 }

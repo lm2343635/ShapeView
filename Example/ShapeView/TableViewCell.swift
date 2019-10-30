@@ -13,8 +13,8 @@ class TableViewCell: UITableViewCell {
     
     private lazy var starView: ShapeView = {
         let view = ShapeView()
-        view.path = .star(vertex: 5, extrusion: 13) {
-            return view.bounds
+        view.path = .star(vertex: 5, extrusion: 13) { [unowned view] in
+            view.bounds
         }
         view.backgroundColor = .yellow
         view.outerShadow = ShapeShadow(radius: 5, color: .lightGray)

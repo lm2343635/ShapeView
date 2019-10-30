@@ -31,10 +31,14 @@ public typealias GetBounds = (() -> CGRect)
 
 public struct ShapePath {
     
-    let drawShape: DrawShape
+    var drawShapes: [DrawShape]
+    
+    public init(_ drawShapes: DrawShape...) {
+        self.drawShapes = drawShapes
+    }
     
     public static func custom(_ drawShape: @escaping DrawShape) -> ShapePath {
-        return .init(drawShape: drawShape)
+        return .init(drawShape)
     }
     
 }
