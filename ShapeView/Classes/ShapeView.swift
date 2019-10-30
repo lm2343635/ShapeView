@@ -36,6 +36,7 @@ open class ShapeView: UIView {
             }
             self.containerView.layer.mask = $0
         }
+        layer.fillRule = .evenOdd
         return layer
     }()
     

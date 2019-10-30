@@ -26,6 +26,18 @@
 
 import UIKit
 
+public enum DialogArrowPosition {
+    case top(center: CGFloat, width: CGFloat, height: CGFloat)
+    case bottom(center: CGFloat, width: CGFloat, height: CGFloat)
+    case right(center: CGFloat, width: CGFloat, height: CGFloat)
+    case left(center: CGFloat, width: CGFloat, height: CGFloat)
+}
+
+public enum CuteDialogArrowPosition {
+    case leftBottom(width: CGFloat, height: CGFloat)
+    case rightBottom(width: CGFloat, height: CGFloat)
+}
+
 extension ShapePath {
     
     public static func dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {

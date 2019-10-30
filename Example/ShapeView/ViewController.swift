@@ -251,10 +251,19 @@ class ViewController: UIViewController {
     
     private lazy var stripeView: ShapeView = {
         let view = ShapeView()
-        view.path = .stripe(width: 10, angle:  3 * .pi / 4) { [unowned self] in
+        view.path = .stripe(width: 10, angle:  3 * .pi / 4) { [unowned view] in
             view.bounds
         }
         view.backgroundColor = .lightText
+        return view
+    }()
+    
+    private lazy var hollowView: ShapeView = {
+        let view = ShapeView()
+        view.path = .hollowCorner(radius: 12, outlineWidth: 2) { [unowned view] in
+            view.bounds
+        }
+        view.backgroundColor = .systemBlue
         return view
     }()
     
@@ -269,6 +278,7 @@ class ViewController: UIViewController {
         view.addSubview(cuteDialogView)
         view.addSubview(updateMessageButton)
         view.addSubview(stripeView)
+        view.addSubview(hollowView)
         createConstraints()
         
     }
@@ -325,6 +335,13 @@ class ViewController: UIViewController {
             $0.height.equalTo(80)
             $0.left.right.equalToSuperview()
             $0.top.equalTo(updateMessageButton.snp.bottom).offset(20)
+        }
+        
+        hollowView.snp.makeConstraints {
+            $0.height.equalTo(80)
+            $0.left.equalToSuperview().offset(30)
+            $0.right.equalToSuperview().offset(-30)
+            $0.top.equalTo(stripeView.snp.bottom).offset(20)
         }
 
     }
