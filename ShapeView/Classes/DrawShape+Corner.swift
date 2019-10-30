@@ -1,5 +1,5 @@
 //
-//  ShapePath+Corner.swift
+//  DrawShape+Corner.swift
 //  ShapeView
 //
 //  Created by Meng Li on 2019/09/04.
@@ -26,10 +26,10 @@
 
 import UIKit
 
-extension ShapePath {
+extension DrawShape {
     
-    public static func corner(radius: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape = DrawShape {
+    public static func corner(radius: CGFloat, bounds: @escaping GetBounds) -> DrawShape {
+        DrawShape {
             let bounds = bounds()
             $0.move(to: CGPoint(x: radius, y: 0))
             $0.addArc(
@@ -61,11 +61,10 @@ extension ShapePath {
                 clockwise: true
             )
         }
-        return .multiple(drawShape)
     }
     
-    public static func hollowCorner(radius: CGFloat, outlineWidth: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape = DrawShape {
+    public static func hollowCorner(radius: CGFloat, outlineWidth: CGFloat, bounds: @escaping GetBounds) -> DrawShape {
+        DrawShape {
             let bounds = bounds()
             $0.append({ () -> UIBezierPath in
                 let path = UIBezierPath()
@@ -87,7 +86,6 @@ extension ShapePath {
                 return path
             }().reversing())
         }
-        return .multiple(drawShape)
     }
     
 }

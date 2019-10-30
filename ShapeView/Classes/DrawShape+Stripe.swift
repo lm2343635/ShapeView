@@ -1,5 +1,5 @@
 //
-//  ShapePath+Stripe.swift
+//  DrawShape+Stripe.swift
 //  ShapeView
 //
 //  Created by Meng Li on 2019/09/04.
@@ -26,13 +26,13 @@
 
 import UIKit
 
-extension ShapePath {
+extension DrawShape {
     
     public static func stripe(
         width: CGFloat = 5,
         angle: Double = .pi / 4,
         bounds: @escaping GetBounds
-    ) -> ShapePath {
+    ) -> DrawShape {
         let drawShape: DrawShape
         switch angle {
         case 0, .pi:
@@ -96,7 +96,7 @@ extension ShapePath {
         default:
             fatalError("Angle must be in [0, pi]")
         }
-        return .multiple(drawShape)
+        return drawShape
     }
     
 }

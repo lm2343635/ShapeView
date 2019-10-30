@@ -1,5 +1,5 @@
 //
-//  ShapePath+Dialog.swift
+//  DrawShape+Dialog.swift
 //  ShapeView
 //
 //  Created by Meng Li on 2019/09/04.
@@ -38,10 +38,10 @@ public enum CuteDialogArrowPosition {
     case rightBottom(width: CGFloat, height: CGFloat)
 }
 
-extension ShapePath {
+extension DrawShape {
     
-    public static func dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape = DrawShape {
+    public static func dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping GetBounds) -> DrawShape {
+        DrawShape {
             let bounds = bounds()
             
             switch arrowPosition {
@@ -51,7 +51,7 @@ extension ShapePath {
                 $0.addLine(to: CGPoint(x: center, y: 0))
                 $0.addLine(to: CGPoint(x: center - width / 2, y: height))
                 $0.addArc(
-                    withCenter: CGPoint(x: bounds.width - radius, y: radius + height), 
+                    withCenter: CGPoint(x: bounds.width - radius, y: radius + height),
                     radius: radius,
                     startAngle: -.pi / 2,
                     endAngle: 0,
@@ -179,11 +179,10 @@ extension ShapePath {
                 )
             }
         }
-        return .multiple(drawShape)
     }
     
-    public static func cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape = DrawShape {
+    public static func cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds) -> DrawShape {
+        DrawShape {
             let bounds = bounds()
             switch arrowPosition {
             case .leftBottom(let width, let height):
@@ -257,7 +256,6 @@ extension ShapePath {
                 )
             }
         }
-        return .multiple(drawShape)
     }
     
 }

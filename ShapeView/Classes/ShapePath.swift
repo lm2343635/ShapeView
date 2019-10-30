@@ -49,3 +49,31 @@ public struct ShapePath {
     }
     
 }
+
+extension ShapePath {
+    
+    public static func corner(radius: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
+        .multiple(.corner(radius: radius, bounds: bounds))
+    }
+    
+    public static func hollowCorner(radius: CGFloat, outlineWidth: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
+        return .multiple(.hollowCorner(radius: radius, outlineWidth: outlineWidth, bounds: bounds))
+    }
+    
+    public static func dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
+        return .multiple(.dialog(radius: radius, arrowPosition: arrowPosition, bounds: bounds))
+    }
+    
+    public static func cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
+        return .multiple(.cuteDialog(radius: radius, arrowPosition: arrowPosition, bounds: bounds))
+    }
+    
+    public static func star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping GetBounds) -> ShapePath {
+        return .multiple(.star(vertex: vertex, extrusion: extrusion, bounds: bounds))
+    }
+    
+    public static func stripe(width: CGFloat = 5, angle: Double = .pi / 4, bounds: @escaping GetBounds) -> ShapePath {
+        return .multiple(.stripe(width: width, angle: angle, bounds: bounds))
+    }
+    
+}

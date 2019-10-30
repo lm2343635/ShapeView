@@ -1,5 +1,5 @@
 //
-//  ShapePath+Star.swift
+//  DrawShape+Star.swift
 //  ShapeView
 //
 //  Created by Meng Li on 2019/09/04.
@@ -24,16 +24,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import UIKit
-
-extension ShapePath {
+extension DrawShape {
     
-    public static func star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping GetBounds) -> ShapePath {
+    public static func star(vertex: Int, extrusion: CGFloat = 10, bounds: @escaping GetBounds) -> DrawShape {
         let pointFrom = { (angle: CGFloat,
             radius:  CGFloat, offset: CGPoint) -> CGPoint in
             return CGPoint(x: radius * cos(angle) + offset.x, y: radius * sin(angle) + offset.y)
         }
-        let drawShape = DrawShape { path in
+        return DrawShape { path in
             let bounds = bounds()
             let center = CGPoint(x: bounds.width / 2.0, y: bounds.height / 2.0)
             var angle: CGFloat = -.pi / 2.0
@@ -57,7 +55,6 @@ extension ShapePath {
                 angle += angleIncrement
             }
         }
-        return .multiple(drawShape)
     }
     
 }
