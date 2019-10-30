@@ -33,7 +33,7 @@ extension ShapePath {
             radius:  CGFloat, offset: CGPoint) -> CGPoint in
             return CGPoint(x: radius * cos(angle) + offset.x, y: radius * sin(angle) + offset.y)
         }
-        let drawShape: DrawShape = { path in
+        let drawShape = DrawShape { path in
             let bounds = bounds()
             let center = CGPoint(x: bounds.width / 2.0, y: bounds.height / 2.0)
             var angle: CGFloat = -.pi / 2.0
@@ -57,7 +57,7 @@ extension ShapePath {
                 angle += angleIncrement
             }
         }
-        return .init(drawShape)
+        return .multiple(drawShape)
     }
     
 }

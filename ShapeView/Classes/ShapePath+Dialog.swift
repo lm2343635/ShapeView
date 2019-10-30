@@ -41,7 +41,7 @@ public enum CuteDialogArrowPosition {
 extension ShapePath {
     
     public static func dialog(radius: CGFloat, arrowPosition: DialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape: DrawShape = {
+        let drawShape = DrawShape {
             let bounds = bounds()
             
             switch arrowPosition {
@@ -179,11 +179,11 @@ extension ShapePath {
                 )
             }
         }
-        return .init(drawShape)
+        return .multiple(drawShape)
     }
     
     public static func cuteDialog(radius: CGFloat, arrowPosition: CuteDialogArrowPosition, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape: DrawShape = {
+        let drawShape = DrawShape {
             let bounds = bounds()
             switch arrowPosition {
             case .leftBottom(let width, let height):
@@ -257,7 +257,7 @@ extension ShapePath {
                 )
             }
         }
-        return .init(drawShape)
+        return .multiple(drawShape)
     }
     
 }

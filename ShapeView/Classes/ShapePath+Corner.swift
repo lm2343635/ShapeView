@@ -29,7 +29,7 @@ import UIKit
 extension ShapePath {
     
     public static func corner(radius: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape: DrawShape = {
+        let drawShape = DrawShape {
             let bounds = bounds()
             $0.move(to: CGPoint(x: radius, y: 0))
             $0.addArc(
@@ -61,13 +61,13 @@ extension ShapePath {
                 clockwise: true
             )
         }
-        return .init(drawShape)
+        return .multiple(drawShape)
     }
     
     public static func hollowCorner(radius: CGFloat, outlineWidth: CGFloat, bounds: @escaping GetBounds) -> ShapePath {
-        let drawShape: DrawShape = { path in
+        let drawShape = DrawShape {
             let bounds = bounds()
-            path.append({ () -> UIBezierPath in
+            $0.append({ () -> UIBezierPath in
                 let path = UIBezierPath()
                 path.move(to: CGPoint(x: radius, y: outlineWidth))
                 path.addArc(withCenter: CGPoint(x: bounds.width - radius, y: radius), radius: radius - outlineWidth, startAngle: -.pi / 2, endAngle: 0, clockwise: true)
@@ -77,7 +77,7 @@ extension ShapePath {
                 return path
             }())
             
-            path.append({ () -> UIBezierPath in
+            $0.append({ () -> UIBezierPath in
                 let path = UIBezierPath()
                 path.move(to: CGPoint(x: radius, y: 0))
                 path.addArc(withCenter: CGPoint(x: bounds.width - radius, y: radius), radius: radius, startAngle: -.pi / 2, endAngle: 0, clockwise: true)
@@ -87,7 +87,7 @@ extension ShapePath {
                 return path
             }().reversing())
         }
-        return .init(drawShape)
+        return .multiple(drawShape)
     }
     
 }

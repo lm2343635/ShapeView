@@ -26,19 +26,26 @@
 
 import UIKit
 
-public typealias DrawShape = ((UIBezierPath) -> Void)
 public typealias GetBounds = (() -> CGRect)
+
+public struct DrawShape {
+    var draw: ((UIBezierPath) -> Void)
+}
 
 public struct ShapePath {
     
-    var drawShapes: [DrawShape]
+    let drawShapes: [DrawShape]
     
-    public init(_ drawShapes: DrawShape...) {
+    init(_ drawShapes: [DrawShape]) {
         self.drawShapes = drawShapes
     }
     
-    public static func custom(_ drawShape: @escaping DrawShape) -> ShapePath {
-        return .init(drawShape)
+    public static func custom(_ draw: @escaping ((UIBezierPath) -> Void)) -> ShapePath {
+        return .multiple(DrawShape(draw: draw))
+    }
+    
+    public static func multiple(_ drawShapes: DrawShape...) -> ShapePath {
+        return .init(drawShapes)
     }
     
 }

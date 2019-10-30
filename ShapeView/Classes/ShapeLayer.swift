@@ -180,7 +180,7 @@ public class ShapeLayer: CAShapeLayer {
             return
         }
         let path = UIBezierPath()
-        drawShapes.forEach { $0(path) }
+        drawShapes.forEach { $0.draw(path) }
         path.close()
         shapePath = path
     }

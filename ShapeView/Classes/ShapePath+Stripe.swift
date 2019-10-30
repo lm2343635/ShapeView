@@ -36,7 +36,7 @@ extension ShapePath {
         let drawShape: DrawShape
         switch angle {
         case 0, .pi:
-            drawShape = { path in
+            drawShape = DrawShape { path in
                 let bounds = bounds()
                 var currentHeight: CGFloat = 0
                 while currentHeight < bounds.height {
@@ -50,7 +50,7 @@ extension ShapePath {
         case 0 ..< .pi / 2:
             let unitWidth = width / CGFloat(sin(angle))
             let unitHeight = width / CGFloat(cos(angle))
-            drawShape = { path in
+            drawShape = DrawShape { path in
                 let bounds = bounds()
                 let canvasMaxWidth = bounds.width + bounds.width / CGFloat(tan(angle))
                 var currentWidth: CGFloat = 0
@@ -65,7 +65,7 @@ extension ShapePath {
                 }
             }
         case .pi / 2:
-            drawShape = { path in
+            drawShape = DrawShape { path in
                 let bounds = bounds()
                 var currentWidth: CGFloat = 0
                 while currentWidth < bounds.width {
@@ -79,7 +79,7 @@ extension ShapePath {
         case .pi / 2 ..< .pi:
             let unitWidth = width / CGFloat(sin(angle))
             let unitHeight = width / CGFloat(cos(angle))
-            drawShape = { path in
+            drawShape = DrawShape { path in
                 let bounds = bounds()
                 let canvasMaxWidth = bounds.width - bounds.width / CGFloat(tan(angle))
                 var currentWidth: CGFloat = 0
@@ -96,7 +96,7 @@ extension ShapePath {
         default:
             fatalError("Angle must be in [0, pi]")
         }
-        return .init(drawShape)
+        return .multiple(drawShape)
     }
     
 }
